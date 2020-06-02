@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.content {
+    background-color: #f5f7f9;
+    flex: 1;
+}
+.subtitle {
+    background-color: #fff;
+    height: 100px;
+    padding: 0 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.subtitle > h1 {
+    font-weight: 300;
+    margin: 0;
+}
+.square {
+    width: 100px;
+    height: 100px;
+    background-color: #fff;
+}
+.card-wrapper {
+    padding: 0 100px 30px 100px;
+}
+.card-content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.loading-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.loading-container > span {
+    font-size: 5rem;
+    color: rgba(0, 0, 0, 0.65);
+}

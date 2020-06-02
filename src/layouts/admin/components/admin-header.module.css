@@ -1,0 +1,27 @@
+.header-wrapper {
+    display: flex;
+    flex-direction: row;
+    background-color: #222;
+    height: 100px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 100px;
+}
+
+.logo {
+    height: 65px;
+}
+.menu-bar {
+    color: #fff;
+}
+
+.header-menu-item {
+    padding: 0 20px 0 6px;
+}
+
+.dropdown-link {
+    cursor: pointer;
+}
+.dropdown-link:hover {
+    color: #1890ff;
+}

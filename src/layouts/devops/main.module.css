@@ -1,0 +1,37 @@
+.trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.trigger:hover {
+    color: #1890ff;
+}
+.logo {
+    height: 64px;
+    /* background-color: #000; */
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 64px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.content-header {
+    padding: 16px 24px 0;
+    background: #fff;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.content-title {
+    font-size: 1.5rem;
+}
+
+.content {
+    margin: 24px 24px 0 24px;
+    padding: 24px;
+    background: #fff;
+    min-height: fit-content;
+}

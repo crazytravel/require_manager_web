@@ -1,0 +1,13 @@
+.container {
+    
+}
+.label {
+    font-weight: 500;
+    margin-right: 5px;
+}
+.search-condition-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 16px 0;
+}
