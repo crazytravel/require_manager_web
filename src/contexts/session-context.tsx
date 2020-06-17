@@ -48,19 +48,15 @@ export const useSession = () => {
 const SessionContextProvider: React.FC = props => {
 
     let prevSession = initialSession();
-    prevSession.username = localStorage.getItem('user_name') || '';
+    prevSession.username = localStorage.getItem('username') || '';
     prevSession.nickname = localStorage.getItem('nick_name') || '';
-    prevSession.roles = localStorage.getItem('user_role')?.split(',') || [];
-    // prevSession.userPermission = localStorage.getItem('user_permission') || '';
+    prevSession.roles = localStorage.getItem('authorities')?.split(',') || [];
     const [session, setSession] = useState(prevSession);
     useEffect(
         () => {
-            // console.log('set session to localStorage');
-            localStorage.setItem('user_name', session.username);
+            localStorage.setItem('username', session.username);
             localStorage.setItem('nick_name', session.nickname || '');
-            localStorage.setItem('user_role', session.roles.join(','));
-            // localStorage.setItem('user_permission', session.userPermission);
-            // localStorage.setItem('user_token', session.userToken);
+            localStorage.setItem('authorities', session.authorities ? session.authorities!.join(',') : '');
         },
         [session]
     );

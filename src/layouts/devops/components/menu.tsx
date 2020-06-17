@@ -38,7 +38,7 @@ const MainMenu: React.FC<MainMenuProps> = ({
 
     const [selectedKeys, setSelectedKeys] = useState<string[]>();
     const auth = useSession();
-    const response = useFetch<Session>('/api/v1/users/' + auth.session.username + '/username', [auth.session.username]);
+    const response = useFetch<Session>('/api/auth/user-info');
 
 
     useEffect(() => {

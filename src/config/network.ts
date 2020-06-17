@@ -4,9 +4,9 @@ import Cookies from 'js-cookie';
 // Axios default config
 Axios.defaults.baseURL = process.env.PUBLIC_URL;
 Axios.defaults.withCredentials = true;
-Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+Axios.defaults.headers.post['Content-Type'] = 'application/json';
 // Axios default config
-Axios.defaults.headers.common['X-CSRF-TOKEN'] = Cookies.get('RM_CSRF_ACCESS_TOKEN');
+// Axios.defaults.headers.common['X-CSRF-TOKEN'] = Cookies.get('RM_CSRF_ACCESS_TOKEN');
 // Add a response interceptor for authenticating failure
 Axios.interceptors.response.use(response => response, (error) => {
     if (error.response?.status === 401) {

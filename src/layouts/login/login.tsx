@@ -1,32 +1,94 @@
 import React, { useState } from 'react';
-import { Button, Card } from 'antd';
+import { useHistory } from 'react-router-dom';
+import { Button, Card, Form, Input, Checkbox, message } from 'antd';
 import styles from './login.module.css';
 import LoginHeader from './components/login-header';
+import Axios from 'axios';
+import HttpStatus from 'http-status-codes';
+import { useSession } from '../../contexts/session-context';
+import { Session } from "../../models/user";
 
 
 
 const LoginLayout: React.FC = props => {
 
     const [loading, setLoading] = useState(false);
+    const history = useHistory();
+    const [form] = Form.useForm();
+    const { login, logout } = useSession();
 
-    const login = () => {
+    const onFinish = () => {
         setLoading(true);
-        window.location.href = process.env.PUBLIC_URL + '/auth/login';
+        form.validateFields()
+            .then(values => {
+                Axios.post("/api/auth/token", { ...values })
+                    .then(res => {
+                        if (res.status === HttpStatus.OK) {
+                            getUserInfo();
+                        }
+                    })
+                    .catch(err => message.error(err.message));
+            })
+            .catch(info => {
+                console.log('Validate Failed:', info);
+            });
         setLoading(false);
+    }
+
+    const getUserInfo = () => {
+        Axios.get("/api/auth/user-info")
+        .then(res => {
+            if (res.status === HttpStatus.OK) {
+                const session: Session = {
+                    username: res.data.username,
+                    nickname: res.data.nickname,
+                    email: res.data.email,
+                    phone: res.data.phone,
+                    roles: res.data.permissions,
+                }
+                login(session);
+            }
+        })
+        .catch(err => message.error(err.message));
+        
     }
 
     return (
         <div className={styles.container}>
             <LoginHeader />
             <div className={styles['content-wrapper']}>
-                <h1 className={styles.title}>Require Manager</h1>
-                <p className={styles['sub-title']}>This is system for manage requirement.</p>
-                <Card title="Sign In" bordered={false} style={{ width: 300, textAlign: "center" }} >
-                    <div className={styles.wrapper}>
-                        <Button className={styles['login-form-button']} type="primary" loading={loading} onClick={() => { login() }}>
-                            Sign in
-                        </Button>
-                    </div>
+                <h1 className={styles.title}>需求管理系统</h1>
+                <p className={styles['sub-title']}>本系统可以管理软件开发中的需求</p>
+                <Card title="登陆" bordered={false} headStyle={{ width: 350, textAlign: "center" }} >
+                    <Form
+                        labelCol={{ span: 6 }}
+                        wrapperCol={{ span: 18 }}
+                        form={form}
+                        name="login"
+                        initialValues={{ remember: true }}
+                        onFinish={onFinish}
+                    >
+                        <Form.Item name="username" label="用户名"
+                            rules={[{ required: true, message: '请输入用户名' }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="password" label="密码"
+                            rules={[{ required: true, message: '请输入密码' }]}>
+                            <Input.Password />
+                        </Form.Item>
+                        <Form.Item
+                            wrapperCol={{ offset: 6, span: 18 }}
+                            name="remember" valuePropName="checked">
+                            <Checkbox>记住我</Checkbox>
+                        </Form.Item>
+
+                        <Form.Item wrapperCol={{ span: 24 }} style={{ textAlign: "center" }}>
+                            <Button className={styles['login-form-button']} type="primary" loading={loading} htmlType="submit">
+                                登陆
+                                </Button>
+                        </Form.Item>
+
+                    </Form>
                 </Card>
             </div>
         </div>

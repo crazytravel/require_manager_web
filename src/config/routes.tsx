@@ -26,7 +26,7 @@ import { Session } from '../models/user';
 export const SystemRoutes: React.FC = () => {
     return (
         <Switch>
-            <ProtectedRoute path="/" exact><Redirect to="/admin" /></ProtectedRoute>
+            <ProtectedRoute path="/" exact><Redirect to="/main" /></ProtectedRoute>
             <ProtectedRoute path="/main" component={MainLayout} />
             <ProtectedRoute path="/admin" exact component={AdminLayout} />
             <ProtectedRoute path="/admin/support" component={Support} />
@@ -40,7 +40,7 @@ export const SystemRoutes: React.FC = () => {
 export const MainRoutes: React.FC = () => {
 
     const auth = useSession();
-    const response = useFetch<Session>('/api/v1/users/' + auth.session.username + '/username', [auth.session.username]);
+    const response = useFetch<Session>('/api/auth/user-info');
     return (
         <Switch>
             <Route path="/main" exact component={WelcomePage} />

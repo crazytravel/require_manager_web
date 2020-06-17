@@ -3,18 +3,11 @@ module.exports = function (app) {
     app.use(
         '/api',
         createProxyMiddleware({
-            target: 'https://cc.iteck/admin-api/',
-            changeOrigin: true,
-        })
-    );
-    app.use(
-        '/storage',
-        createProxyMiddleware({
-            target: 'https://cc.iteck/storage/',
+            target: 'http://localhost:8080',
             changeOrigin: true,
             pathRewrite: {
-                '^/storage': ''
-            }
-        }),
+                '^/api': ''
+            },
+        })
     );
 };
