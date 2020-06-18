@@ -12,7 +12,7 @@ const AdminHeader = () => {
     }
     return (
         <header className={styles['header-wrapper']}>
-            {/* <Link to="/"><img className={styles.logo} src={logoImg} alt="require manager" /></Link> */}
+            <Link to="/"><h1 className={styles.logo}>需求管理平台</h1></Link>
             <div className={styles['menu-bar']}>
                 <Dropdown overlay={
                     <Menu>
@@ -21,7 +21,7 @@ const AdminHeader = () => {
                     </Menu>
                 } placement="bottomRight">
                     <span className={styles["dropdown-link"]}>
-                        Hello, {session.nickname} <DownOutlined />
+                        您好，{session.nickname} <DownOutlined />
                     </span>
                 </Dropdown>
             </div>

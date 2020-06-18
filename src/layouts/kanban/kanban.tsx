@@ -23,7 +23,7 @@ const AdminLayout: React.FC = props => {
             <AdminHeader />
             <div className={styles.content}>
                 <div className={styles['subtitle']}>
-                    <h1>Welcome back to Require Manager</h1>
+                    <h1>欢迎回来</h1>
                     <Link to="/admin/support">
                         <Tooltip placement="bottom" title="Ask for Support">
                             <QuestionCircleOutlined style={{ fontSize: '2rem', color: 'rgba(0, 0, 0, 0.65)' }} />

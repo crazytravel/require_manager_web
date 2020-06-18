@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { WelcomePage,
+import {
+    WelcomePage,
     UserPage,
     VersionPage,
     LegalPage,
@@ -11,22 +12,21 @@ import { WelcomePage,
     RolePage,
     AuthorityPage,
     NoMatchPage,
-    ForbiddenPage } from 'layouts/main/export';
+    ForbiddenPage
+} from 'layouts/main/export';
 import ProtectedRoute from 'components/protected-route';
 import MainLayout from 'layouts/main/main';
-import AdminLayout from 'layouts/kanban/kanban';
+import KanbanLayout from 'layouts/kanban/kanban';
 import LoginLayout from 'layouts/login/login';
-import Support from 'layouts/kanban/support';
 
 import { useSession } from 'contexts/session-context';
 
 export const SystemRoutes: React.FC = () => {
     return (
         <Switch>
-            <ProtectedRoute path="/" exact component={MainLayout}><Redirect to="/main" /></ProtectedRoute>
+            <ProtectedRoute path="/" exact><Redirect to="/kanban" /></ProtectedRoute>
             <ProtectedRoute path="/main" component={MainLayout} />
-            <ProtectedRoute path="/admin" exact component={AdminLayout} />
-            <ProtectedRoute path="/admin/support" component={Support} />
+            <ProtectedRoute path="/kanban" exact component={KanbanLayout} />
             <Route path="/login" component={LoginLayout} />
             <Route component={NoMatchPage} />
         </Switch>
