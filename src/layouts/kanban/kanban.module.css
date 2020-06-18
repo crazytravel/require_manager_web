@@ -9,24 +9,27 @@
 }
 .subtitle {
     background-color: #fff;
-    height: 100px;
-    padding: 0 100px;
+    height: 5rem;
+    line-height: 5rem;
+    padding: 0 3rem;
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: space-between;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    z-index: 10;
 }
 .subtitle > h1 {
     font-weight: 300;
     margin: 0;
+    padding: 0;
 }
 .square {
-    width: 100px;
-    height: 100px;
+    width: 10rem;
+    height: 10rem;
     background-color: #fff;
 }
 .card-wrapper {
-    padding: 0 100px 30px 100px;
+    padding: 3rem;
 }
 .card-content {
     overflow: hidden;

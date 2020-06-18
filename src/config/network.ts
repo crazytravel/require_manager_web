@@ -23,7 +23,10 @@ const interceptor = axios.interceptors.response.use(response => response, (error
             return axios(originalRequest);
         }
     }).catch(err => {
-        window.location.href = '/login';
+        if (err.response.status === 401) {
+            window.location.href = '/login';
+            return;
+        }
         return Promise.reject(err);
     });
 });
