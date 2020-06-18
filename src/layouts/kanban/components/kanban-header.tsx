@@ -3,7 +3,7 @@ import { Dropdown, Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import { LogoutOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import { useSession } from '../../../contexts/session-context';
-import styles from './admin-header.module.css';
+import styles from './kanban-header.module.css';
 
 const AdminHeader = () => {
     const { logout, session } = useSession();

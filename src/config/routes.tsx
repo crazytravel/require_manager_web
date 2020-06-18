@@ -13,17 +13,17 @@ import RolePage from '../pages/role/role';
 import NoMatchPage from '../pages/404/no-match';
 import ForbiddenPage from '../pages/403/forbidden';
 import ProtectedRoute from '../components/protected-route';
-import MainLayout from '../layouts/devops/main';
-import AdminLayout from '../layouts/admin/admin';
+import MainLayout from '../layouts/main/main';
+import AdminLayout from '../layouts/kanban/kanban';
 import LoginLayout from '../layouts/login/login';
-import Support from '../layouts/admin/support';
+import Support from '../layouts/kanban/support';
 
 import { useSession } from '../contexts/session-context';
 
 export const SystemRoutes: React.FC = () => {
     return (
         <Switch>
-            <ProtectedRoute path="/" exact><Redirect to="/main" /></ProtectedRoute>
+            <ProtectedRoute path="/" exact component={MainLayout}><Redirect to="/main" /></ProtectedRoute>
             <ProtectedRoute path="/main" component={MainLayout} />
             <ProtectedRoute path="/admin" exact component={AdminLayout} />
             <ProtectedRoute path="/admin/support" component={Support} />
@@ -39,7 +39,7 @@ export const MainRoutes: React.FC = () => {
     const authorities = session.authorities;
     return (
         <Switch>
-            <Route path="/main" exact component={WelcomePage} />
+            <Route path="/main" exact><Redirect to="/main/welcome" /></Route>
             <Route path="/main/welcome" component={WelcomePage} />
             <Route path="/main/system/subsystem" render={() =>
                 authorities?.includes('MENU_ITEM_SYSTEM_SUBSYSTEM') ? <SubsystemPage /> : <ForbiddenPage />

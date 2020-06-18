@@ -6,9 +6,9 @@ import { QuestionCircleOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useFetch } from '../../hooks/fetch';
 import StorageImg from '../../components/storage-img';
 import { Subsystem } from '../../models/subsystem';
-import styles from './admin.module.css';
+import styles from './kanban.module.css';
 import devopsImg from '../../assets/images/cover-devops.jpg';
-import AdminHeader from './components/admin-header';
+import AdminHeader from './components/kanban-header';
 
 const { Meta } = Card;
 

@@ -51,7 +51,7 @@ const MainMenu: React.FC<MainMenuProps> = ({
     const recursion = (data: MenuItem[]) => {
         return (
             data.map(item => {
-                if (!auth.session.authorities?.includes(item.key)) {
+                if (!auth.session.authorities?.includes(item.key) && item.key !== 'welcome') {
                     return null;
                 }
                 if (item.children) {

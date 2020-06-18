@@ -1,7 +1,7 @@
 import React from 'react'
 import { MailOutlined } from '@ant-design/icons';
 import styles from './support.module.css';
-import AdminHeader from './components/admin-header';
+import AdminHeader from './components/kanban-header';
 
 const Support = () => {
     return (

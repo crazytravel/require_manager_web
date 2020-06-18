@@ -4,7 +4,7 @@ import styles from './welcome.module.css';
 const WelcomePage: React.FC = () => {
 
     return (
-        <h1 className={styles.container}>China App Family Backend DevOps Platform</h1>
+        <h1 className={styles.container}>欢迎进入需求管理系统</h1>
     )
 }
 
