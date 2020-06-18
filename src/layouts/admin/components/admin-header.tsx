@@ -3,7 +3,6 @@ import { Dropdown, Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import { LogoutOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import { useSession } from '../../../contexts/session-context';
-import logoImg from '../../../assets/images/logo@2x.png';
 import styles from './admin-header.module.css';
 
 const AdminHeader = () => {
@@ -13,7 +12,7 @@ const AdminHeader = () => {
     }
     return (
         <header className={styles['header-wrapper']}>
-            <Link to="/"><img className={styles.logo} src={logoImg} alt="require manager" /></Link>
+            {/* <Link to="/"><img className={styles.logo} src={logoImg} alt="require manager" /></Link> */}
             <div className={styles['menu-bar']}>
                 <Dropdown overlay={
                     <Menu>

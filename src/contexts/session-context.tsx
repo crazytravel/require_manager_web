@@ -7,6 +7,7 @@ import HttpStatus from 'http-status-codes';
 
 const initialSession = () => {
     const session: Session = {
+        logged_in: false,
         username: '',
         nickname: '',
         email: '',
@@ -26,14 +27,11 @@ export const useSession = () => {
         history.push('/');
     }
     const logout = () => {
-        setSession(initialSession());
-        Axios.post('/auth/logout')
+        Axios.post('/api/auth/logout')
             .then(res => {
-                if (res.status === HttpStatus.CREATED) {
-                    window.location = res.data['redirectUrl'];
-                    // session.logoutUrl = res.data['redirectUrl'];
-                    // setSession(session);
-                    // history.push('/login');
+                if (res.status === HttpStatus.OK) {
+                    setSession(initialSession());
+                    history.push('/login');
                 } else {
                     message.error('logout failed.');
                 }
@@ -47,13 +45,15 @@ export const useSession = () => {
 
 const SessionContextProvider: React.FC = props => {
 
-    let prevSession = initialSession();
+    const prevSession = initialSession();
+    prevSession.logged_in = (localStorage.getItem('logged_in') === 'true') || false;
     prevSession.username = localStorage.getItem('username') || '';
     prevSession.nickname = localStorage.getItem('nick_name') || '';
-    prevSession.roles = localStorage.getItem('authorities')?.split(',') || [];
+    prevSession.authorities = localStorage.getItem('authorities')?.split(',') || [];
     const [session, setSession] = useState(prevSession);
     useEffect(
         () => {
+            localStorage.setItem('logged_in', session.logged_in.toString());
             localStorage.setItem('username', session.username);
             localStorage.setItem('nick_name', session.nickname || '');
             localStorage.setItem('authorities', session.authorities ? session.authorities!.join(',') : '');

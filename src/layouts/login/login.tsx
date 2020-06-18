@@ -1,21 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Card, Form, Input, Checkbox, message } from 'antd';
 import styles from './login.module.css';
-import LoginHeader from './components/login-header';
 import Axios from 'axios';
 import HttpStatus from 'http-status-codes';
 import { useSession } from '../../contexts/session-context';
-import { Session } from "../../models/user";
+import { Session } from '../../models/user';
 
 
 
 const LoginLayout: React.FC = props => {
 
     const [loading, setLoading] = useState(false);
-    const history = useHistory();
     const [form] = Form.useForm();
-    const { login, logout } = useSession();
+    const { login, session } = useSession();
+    const history = useHistory();
+
+    useEffect(() => {
+        if (session.logged_in) {
+            history.push('/');
+        }
+    }, [history, session]);
 
     const onFinish = () => {
         setLoading(true);
@@ -37,25 +42,18 @@ const LoginLayout: React.FC = props => {
 
     const getUserInfo = () => {
         Axios.get("/api/auth/user-info")
-        .then(res => {
-            if (res.status === HttpStatus.OK) {
-                const session: Session = {
-                    username: res.data.username,
-                    nickname: res.data.nickname,
-                    email: res.data.email,
-                    phone: res.data.phone,
-                    roles: res.data.permissions,
+            .then(res => {
+                if (res.status === HttpStatus.OK) {
+                    const newSession: Session = {...res.data, logged_in: true, authorities: res.data.permissions};
+                    login(newSession);
                 }
-                login(session);
-            }
-        })
-        .catch(err => message.error(err.message));
-        
+            })
+            .catch(err => message.error(err.message));
+
     }
 
     return (
         <div className={styles.container}>
-            <LoginHeader />
             <div className={styles['content-wrapper']}>
                 <h1 className={styles.title}>需求管理系统</h1>
                 <p className={styles['sub-title']}>本系统可以管理软件开发中的需求</p>

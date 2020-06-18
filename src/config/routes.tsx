@@ -16,12 +16,9 @@ import ProtectedRoute from '../components/protected-route';
 import MainLayout from '../layouts/devops/main';
 import AdminLayout from '../layouts/admin/admin';
 import LoginLayout from '../layouts/login/login';
-import LoginSuccessLayout from '../layouts/login/login-success';
 import Support from '../layouts/admin/support';
 
 import { useSession } from '../contexts/session-context';
-import { useFetch } from '../hooks/fetch';
-import { Session } from '../models/user';
 
 export const SystemRoutes: React.FC = () => {
     return (
@@ -31,7 +28,6 @@ export const SystemRoutes: React.FC = () => {
             <ProtectedRoute path="/admin" exact component={AdminLayout} />
             <ProtectedRoute path="/admin/support" component={Support} />
             <Route path="/login" component={LoginLayout} />
-            <Route path='/login-success' component={LoginSuccessLayout} />
             <Route component={NoMatchPage} />
         </Switch>
     )
@@ -39,38 +35,38 @@ export const SystemRoutes: React.FC = () => {
 
 export const MainRoutes: React.FC = () => {
 
-    const auth = useSession();
-    const response = useFetch<Session>('/api/auth/user-info');
+    const { session } = useSession();
+    const authorities = session.authorities;
     return (
         <Switch>
             <Route path="/main" exact component={WelcomePage} />
             <Route path="/main/welcome" component={WelcomePage} />
             <Route path="/main/system/subsystem" render={() =>
-                response.fetchedData?.authorities?.includes('MENU_ITEM_SYSTEM_SUBSYSTEM') ? <SubsystemPage /> : <ForbiddenPage />
+                authorities?.includes('MENU_ITEM_SYSTEM_SUBSYSTEM') ? <SubsystemPage /> : <ForbiddenPage />
             } />
             <Route path="/main/system/user" render={() =>
-                response.fetchedData?.authorities?.includes('MENU_ITEM_SYSTEM_ACCOUNT_USER') ? <UserPage /> : <ForbiddenPage />
+                authorities?.includes('MENU_ITEM_SYSTEM_ACCOUNT_USER') ? <UserPage /> : <ForbiddenPage />
             } />
             <Route path="/main/system/role" render={() =>
-                response.fetchedData?.authorities?.includes('MENU_ITEM_SYSTEM_ACCOUNT_ROLE') ? <RolePage /> : <ForbiddenPage />
+                authorities?.includes('MENU_ITEM_SYSTEM_ACCOUNT_ROLE') ? <RolePage /> : <ForbiddenPage />
             } />
             {/* <Route path="/main/system/authority" render={() =>
-                response.fetchedData?.authorities?.includes('MENU_ITEM_SYSTEM_ACCOUNT_AUTHORITY') ? <AuthorityPage /> : <ForbiddenPage />
+                authorities?.includes('MENU_ITEM_SYSTEM_ACCOUNT_AUTHORITY') ? <AuthorityPage /> : <ForbiddenPage />
             } /> */}
             <Route path="/main/version" render={() =>
-                response.fetchedData?.authorities?.includes('MENU_ITEM_VERSION') ? <VersionPage /> : <ForbiddenPage />
+                authorities?.includes('MENU_ITEM_VERSION') ? <VersionPage /> : <ForbiddenPage />
             } />
             <Route path="/main/legal" render={() =>
-                response.fetchedData?.authorities?.includes('MENU_ITEM_LEGAL') ? <LegalPage /> : <ForbiddenPage />
+                authorities?.includes('MENU_ITEM_LEGAL') ? <LegalPage /> : <ForbiddenPage />
             } />
             <Route path="/main/gateway" render={() =>
-                response.fetchedData?.authorities?.includes('MENU_ITEM_GATEWAY') ? <GatewayPage /> : <ForbiddenPage />
+                authorities?.includes('MENU_ITEM_GATEWAY') ? <GatewayPage /> : <ForbiddenPage />
             } />
             <Route path="/main/toggle" render={() =>
-                response.fetchedData?.authorities?.includes('MENU_ITEM_TOGGLE') ? <TogglePage /> : <ForbiddenPage />
+                authorities?.includes('MENU_ITEM_TOGGLE') ? <TogglePage /> : <ForbiddenPage />
             } />
             <Route path="/main/notice" render={() =>
-                response.fetchedData?.authorities?.includes('MENU_ITEM_NOTICE') ? <NoticePage /> : <ForbiddenPage />
+                authorities?.includes('MENU_ITEM_NOTICE') ? <NoticePage /> : <ForbiddenPage />
             } />
             <Route component={NoMatchPage} />
         </Switch>

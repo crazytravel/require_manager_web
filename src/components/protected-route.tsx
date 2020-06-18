@@ -4,11 +4,11 @@ import { useSession } from '../contexts/session-context';
 
 const ProtectedRoute: React.FC<RouteProps> = props => {
 
-    const auth = useSession();
+    const { session } = useSession();
 
     const developMode = process.env.NODE_ENV
 
-    if (!auth.session.username && developMode === 'production') {
+    if (!session.username && developMode === 'production') {
         return <Redirect to="/login" />;
     } else {
         return <Route {...props} />;

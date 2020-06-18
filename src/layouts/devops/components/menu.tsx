@@ -2,8 +2,6 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import { useSession } from '../../../contexts/session-context';
-import { useFetch } from '../../../hooks/fetch';
-import { Session } from '../../../models/user';
 
 export interface MenuItem {
     key: string;
@@ -38,7 +36,7 @@ const MainMenu: React.FC<MainMenuProps> = ({
 
     const [selectedKeys, setSelectedKeys] = useState<string[]>();
     const auth = useSession();
-    const response = useFetch<Session>('/api/auth/user-info');
+    
 
 
     useEffect(() => {
@@ -53,7 +51,7 @@ const MainMenu: React.FC<MainMenuProps> = ({
     const recursion = (data: MenuItem[]) => {
         return (
             data.map(item => {
-                if (!response.fetchedData?.authorities?.includes(item.key)) {
+                if (!auth.session.authorities?.includes(item.key)) {
                     return null;
                 }
                 if (item.children) {

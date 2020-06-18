@@ -23,7 +23,7 @@ const MainLayout: React.FC = () => {
                     console.log(broken);
                 }}
                 trigger={null} collapsible collapsed={collapsed}>
-                <div className={styles.logo}>{collapsed ? 'RM' : 'Require Manager'}</div>
+                <div className={styles.logo}>{collapsed ? '需求' : '需求管理系统'}</div>
                 <MainMenu menuData={menuData} selectCallback={item => {
                     setSelectedMenu(item);
                 }} />

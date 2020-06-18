@@ -7,7 +7,7 @@ const LoginHeader: React.FC = () => {
     return (
         <header className={styles['header-wrapper']}>
             <Link to="/">
-                <img className={styles.logo} src={logoImg} alt="require manager" />
+                {/* <img className={styles.logo} src={logoImg} alt="require manager" /> */}
             </Link>
         </header>
     )
