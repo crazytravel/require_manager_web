@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, message } from 'antd';
-import Axios from '../../../config/network';
-import { Role } from '../../../models/role';
+import Axios from 'config/network';
+import { Role } from 'models/role';
 import HttpStatus from 'http-status-codes';
 
 

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Table, Button, Modal, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import Axios from '../../config/network';
-import { useFetch } from '../../hooks/fetch';
-import { Subsystem } from '../../models/subsystem';
+import Axios from 'config/network';
+import { useFetch } from 'hooks/fetch';
+import { Subsystem } from 'models/subsystem';
 import styles from './subsystem.module.css';
-import StorageImg from '../../components/storage-img';
+import StorageImg from 'components/storage-img';
 import SubSystemForm from './components/subsystem-form';
 import HttpStatus from 'http-status-codes';
 

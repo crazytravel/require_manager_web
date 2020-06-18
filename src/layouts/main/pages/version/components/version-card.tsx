@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, Row, Col } from 'antd';
 import { AppleFilled, AndroidFilled } from '@ant-design/icons';
-import { useFetch } from '../../../hooks/fetch';
-import { VersionData } from '../../../models/version';
+import { useFetch } from 'hooks/fetch';
+import { VersionData } from 'models/version';
 
 interface VersionCardProps {
     os: 'ios' | 'android';

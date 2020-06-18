@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, message } from 'antd';
 import AuthorityTable from './components/authority-table';
 import AuthorityForm from './components/authority-form';
-import { Authority } from '../../models/authority';
+import { Authority } from 'models/authority';
 import styles from './authority.module.css';
 
 const AuthorityPage: React.FC = () => {

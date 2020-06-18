@@ -1,24 +1,24 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import WelcomePage from '../pages/welcome/welcome';
-import UserPage from '../pages/user/user';
-import VersionPage from '../pages/version/version';
-import LegalPage from '../pages/legal/legal';
-import GatewayPage from '../pages/gateway/gateway';
-import TogglePage from '../pages/toggle/toggle';
-import NoticePage from '../pages/notice/notice';
-import SubsystemPage from '../pages/subsystem/subsystem';
-import RolePage from '../pages/role/role';
-// import AuthorityPage from '../pages/authority/authority';
-import NoMatchPage from '../pages/404/no-match';
-import ForbiddenPage from '../pages/403/forbidden';
-import ProtectedRoute from '../components/protected-route';
-import MainLayout from '../layouts/main/main';
-import AdminLayout from '../layouts/kanban/kanban';
-import LoginLayout from '../layouts/login/login';
-import Support from '../layouts/kanban/support';
+import { WelcomePage,
+    UserPage,
+    VersionPage,
+    LegalPage,
+    GatewayPage,
+    TogglePage,
+    NoticePage,
+    SubsystemPage,
+    RolePage,
+    AuthorityPage,
+    NoMatchPage,
+    ForbiddenPage } from 'layouts/main/export';
+import ProtectedRoute from 'components/protected-route';
+import MainLayout from 'layouts/main/main';
+import AdminLayout from 'layouts/kanban/kanban';
+import LoginLayout from 'layouts/login/login';
+import Support from 'layouts/kanban/support';
 
-import { useSession } from '../contexts/session-context';
+import { useSession } from 'contexts/session-context';
 
 export const SystemRoutes: React.FC = () => {
     return (

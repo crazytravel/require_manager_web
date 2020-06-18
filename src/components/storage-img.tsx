@@ -1,6 +1,6 @@
 import React from 'react';
 import { LoadingOutlined } from '@ant-design/icons';
-import { useFetch } from '../hooks/fetch';
+import { useFetch } from 'hooks/fetch';
 
 interface StorageImgProps {
     mediaId: string,

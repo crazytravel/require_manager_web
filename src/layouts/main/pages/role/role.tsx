@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Button, message, Table, Modal, Tag } from 'antd';
 import RoleForm from './components/role-form';
 import AuthoritySelect from './components/authority-select';
-import { Authority } from '../../models/authority';
+import { Authority } from 'models/authority';
 import styles from './role.module.css';
-import { useFetch } from '../../hooks/fetch';
-import Axios from '../../config/network';
+import { useFetch } from 'hooks/fetch';
+import Axios from 'config/network';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import HttpStatus from 'http-status-codes';
 

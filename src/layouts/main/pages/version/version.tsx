@@ -3,7 +3,7 @@ import { Row, Col, Radio, Button, message } from 'antd';
 import VersionCard from './components/version-card';
 import VersionForm from './components/version-form';
 import VersionTable from './components/version-table';
-import { VersionData } from '../../models/version';
+import { VersionData } from 'models/version';
 import styles from './version.module.css';
 import { RadioChangeEvent } from 'antd/lib/radio';
 

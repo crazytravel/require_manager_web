@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Modal, message } from 'antd';
-import Axios from '../../../config/network';
+import Axios from 'config/network';
 import HttpStatus from 'http-status-codes';
-import { UserRole } from '../../../models/role';
+import { RoleAuthority } from 'models/authority';
 
-interface RoleSelectProps {
-    userId: number | undefined;
+interface AuthoritySelectProps {
+    roleId: number | undefined;
     visible: boolean;
     onSave: () => void;
     onCancel: () => void;
 }
 
-const RoleSelect: React.FC<RoleSelectProps> = props => {
+const AuthoritySelect: React.FC<AuthoritySelectProps> = props => {
 
     const [selectedIds, setSelectedIds] = useState<React.ReactText[]>()
     const [loading, setLoading] = useState(false)
     const [fetchedData, setFetchedData] = useState()
 
     useEffect(() => {
-        if (props.userId) {
+        if (props.roleId) {
             setLoading(true);
-            Axios.get('/api/v1/roles/')
+            Axios.get('/api/v1/authorities/')
                 .then(res => {
                     if (res.status === HttpStatus.OK) {
                         setFetchedData(res.data);
@@ -30,12 +30,12 @@ const RoleSelect: React.FC<RoleSelectProps> = props => {
                 .then(() => {
                     setLoading(false);
                 });
-            Axios.get('/api/v1/userAndRoles/' + props.userId + '/assign')
+            Axios.get('/api/v1/roleAndAuthorities/' + props.roleId + '/grant')
                 .then(res => {
                     if (res.status === HttpStatus.OK) {
                         const selectedIds: number[] = []
-                        res.data?.forEach((userRole: UserRole) => {
-                            selectedIds.push(userRole.role_id);
+                        res.data?.forEach((roleAuthority: RoleAuthority) => {
+                            selectedIds.push(roleAuthority.authority_id);
                         });
                         setSelectedIds(selectedIds);
                     }
@@ -43,10 +43,10 @@ const RoleSelect: React.FC<RoleSelectProps> = props => {
                 .catch(err => message.error('load error:' + err.message))
         }
 
-    }, [props.userId])
+    }, [props.roleId])
 
     const okHandler = () => {
-        Axios.put('/api/v1/userAndRoles/' + props.userId + '/assign', { roleIds: selectedIds })
+        Axios.put('/api/v1/roleAndAuthorities/' + props.roleId + '/grant', { authorityIds: selectedIds })
             .then(res => {
                 if (res.status === HttpStatus.CREATED) {
                     props.onSave();
@@ -60,7 +60,7 @@ const RoleSelect: React.FC<RoleSelectProps> = props => {
             visible={props.visible}
             width={750}
             style={{ maxHeight: 500 }}
-            title="Grant role to user"
+            title="Grant authority to role"
             okText="Save"
             cancelText="Cancel"
             onCancel={props.onCancel}
@@ -86,4 +86,4 @@ const RoleSelect: React.FC<RoleSelectProps> = props => {
     );
 }
 
-export default RoleSelect;
+export default AuthoritySelect;
