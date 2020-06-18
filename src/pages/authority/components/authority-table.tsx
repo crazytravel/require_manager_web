@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Table, Button, Modal, message } from 'antd';
 import { useFetch } from '../../../hooks/fetch';
-import Axios from 'axios';
+import Axios from '../../../config/network';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import HttpStatus from 'http-status-codes';
 

@@ -5,7 +5,7 @@ import AuthoritySelect from './components/authority-select';
 import { Authority } from '../../models/authority';
 import styles from './role.module.css';
 import { useFetch } from '../../hooks/fetch';
-import Axios from 'axios';
+import Axios from '../../config/network';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import HttpStatus from 'http-status-codes';
 

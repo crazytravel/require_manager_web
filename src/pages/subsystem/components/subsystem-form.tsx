@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Form, Input, Upload, message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import Axios from 'axios';
+import Axios from '../../../config/network';
 import { Subsystem } from '../../../models/subsystem';
 import { UploadChangeParam } from 'antd/lib/upload/interface';
 import HttpStatus from 'http-status-codes';

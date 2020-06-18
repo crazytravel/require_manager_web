@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Modal, message } from 'antd';
-import Axios from 'axios';
+import Axios from '../../../config/network';
 import HttpStatus from 'http-status-codes';
 import { RoleAuthority } from '../../../models/authority';
 

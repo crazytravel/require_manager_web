@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Card, Form, Input, Checkbox, message } from 'antd';
 import styles from './login.module.css';
-import Axios from 'axios';
+import Axios from '../../config/network';
 import HttpStatus from 'http-status-codes';
 import { useSession } from '../../contexts/session-context';
 import { Session } from '../../models/user';

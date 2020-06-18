@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table, Button, Modal, message, Switch, Tag } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import HttpStatus from 'http-status-codes';
-import Axios from 'axios';
+import Axios from '../../config/network';
 import RoleSelect from './components/role-select';
 import { useFetch } from '../../hooks/fetch';
 import styles from './user.module.css';

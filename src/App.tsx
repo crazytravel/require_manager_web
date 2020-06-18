@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { SystemRoutes } from './config/routes';
 import SessionContextProvider from './contexts/session-context';
-import './config/network';
 
 const App: React.FC = () => {
   const baseURL = process.env.PUBLIC_URL;

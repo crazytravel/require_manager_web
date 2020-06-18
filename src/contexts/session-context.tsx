@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { Session } from '../models/user';
 import { useHistory } from 'react-router-dom';
-import Axios from 'axios';
+import Axios from '../config/network';
 import { message } from 'antd';
 import HttpStatus from 'http-status-codes';
 

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { message } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useSession } from '../../contexts/session-context';
-import Axios from 'axios';
+import Axios from '../../config/network';
 import HttpStatus from 'http-status-codes';
 import styles from './login-success.module.css';
 import LoginHeader from './components/login-header';
