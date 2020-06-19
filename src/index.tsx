@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { SystemRoutes } from './config/routes';
 import SessionContextProvider from './contexts/session-context';
-import './index.css';
+import './index.less';
 // import * as serviceWorker from './serviceWorker';
 
 

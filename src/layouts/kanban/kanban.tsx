@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Row, Col, Tooltip } from 'antd';
+import { Card, Row, Col, Tooltip, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { SettingOutlined, LoadingOutlined } from '@ant-design/icons';
 
@@ -7,10 +7,11 @@ import { useFetch } from 'hooks/fetch';
 import StorageImg from 'components/storage-img';
 import { Subsystem } from 'models/subsystem';
 import styles from './kanban.module.css';
-import devopsImg from 'assets/images/cover-devops.jpg';
+
 import AdminHeader from './components/kanban-header';
-import { useDrag } from 'react-dnd';
-// import {} from 'react-dnd-html5-backend';
+import CardContainer from './components/card-container';
+import DragCard from './components/drag-card';
+import AddButton from './components/add-button';
 
 const { Meta } = Card;
 
@@ -32,47 +33,21 @@ const AdminLayout: React.FC = props => {
                     </Tooltip>
                 </Link>
             </div>
-            <div className={styles.content}>
-                <div className={styles['card-wrapper']}>
-                    <Row>
-                        <Col key="-1">
-                            <Tooltip placement="bottom" title="require manager">
-                                <Link to="/main">
-                                    <Card
-                                        hoverable
-                                        bordered={false}
-                                        style={{ width: 320, textAlign: 'center', overflow: 'hidden' }}
-                                        cover={
-                                            <img style={{ height: 150, objectFit: "cover" }} src={devopsImg} alt="DevOps" />
-                                        }
-                                    >
-                                        <Meta title="DevOps Portal" className={styles['card-content']} />
-                                    </Card>
-                                </Link>
-                            </Tooltip>
-                        </Col>
-                        {loading ? <Loading /> : fetchedData?.map(item => {
-                            return (
-                                <Col key={item.id}>
-                                    <Tooltip placement="bottom" title={item.description}>
-                                        <a href={item.url}>
-                                            <Card
-                                                hoverable
-                                                bordered={false}
-                                                style={{ width: 320, textAlign: 'center', overflow: 'hidden' }}
-                                                cover={
-                                                    <StorageImg style={{ height: 150, objectFit: "cover" }} mediaId={item.media_id} alt={item.name} />
-                                                }
-                                            >
-                                                <Meta title={item.name} className={styles['card-content']} />
-                                            </Card>
-                                        </a>
-                                    </Tooltip>
-                                </Col>
-                            )
-                        })}
-                    </Row>
+            <div className={styles.wrapper}>
+                <div className={styles.content}>
+                    <CardContainer title="代办">
+                        <Link to="/main"><DragCard /></Link>
+                        <Link to="/main"><DragCard /></Link>
+                        <Link to="/main"><DragCard /></Link>
+                    </CardContainer>
+                    <CardContainer title="开发中">
+                        <Link to="/main"><DragCard /></Link>
+                    </CardContainer>
+                    <CardContainer title="已完成">
+                        <Link to="/main"><DragCard /></Link>
+                    </CardContainer>
                 </div>
+                <Button type="dashed" style={{width: 250, height: 40, marginLeft: 10}}> + 创建新列表</Button>
             </div>
         </div >
     )
