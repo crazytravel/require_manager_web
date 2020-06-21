@@ -1,14 +1,13 @@
 import React from 'react';
-import { Card, Row, Col, Tooltip } from 'antd';
+import { Card } from 'antd';
 import { useDrag } from 'react-dnd';
-import { createUseStyles } from 'react-jss';
+import styled from 'styled-components';
 import devopsImg from 'assets/images/cover-devops.jpg';
 
 const { Meta } = Card;
 
 
 const DragCard: React.FC = props => {
-    const classes = useStyles();
     const [{ opacity }, dragRef] = useDrag({
         item: { type: 'card' },
         collect: (monitor) => ({
@@ -16,27 +15,44 @@ const DragCard: React.FC = props => {
         })
     });
     return (
-        <div ref={dragRef} style={{ marginTop: 10, marginBottom: 10, opacity }}>
-            <Card
+        <Wrapper ref={dragRef} opacity={opacity}>
+            <StyledCard
                 hoverable
                 bordered={false}
-                style={{ width: 250, textAlign: 'center', overflow: 'hidden' }}
                 cover={
-                    <img style={{ height: 100, objectFit: "cover" }} src={ devopsImg } alt="DevOps" />
+                    <StyledImg src={devopsImg} alt="DevOps" />
                 }
             >
-                <Meta title="DevOps Portal" className={classes.cardContent} />
-            </Card>
-        </div>
+                <StyledMeta title="DevOps Portal" />
+            </StyledCard>
+        </Wrapper>
 
     )
 }
 
-const useStyles = createUseStyles({
-    cardContent: {
-        overflow: 'hidden',
-        textOverflow: 'ellipsis'
-    }
-});
+interface WrapperProps {
+    readonly opacity: number;
+}
+
+const Wrapper = styled.div<WrapperProps>`
+    margin: 10px 0;
+    opacity: ${props => props.opacity};
+`;
+
+const StyledCard = styled(Card)`
+    width: 250px;
+    text-align: center;
+    overflow: hidden;
+`;
+
+const StyledImg = styled.img`
+    height: 100px; 
+    object-fit: cover;
+`;
+
+const StyledMeta = styled(Meta)`
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
 
 export default DragCard;

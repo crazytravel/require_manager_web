@@ -4,10 +4,11 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import Axios from 'config/network';
 import { useFetch } from 'hooks/fetch';
 import { Subsystem } from 'models/subsystem';
-import styles from './subsystem.module.css';
 import StorageImg from 'components/storage-img';
 import SubSystemForm from './components/subsystem-form';
 import HttpStatus from 'http-status-codes';
+
+import {StyledCondition} from '../../components/styled';
 
 const { confirm } = Modal;
 
@@ -46,10 +47,10 @@ const SubsystemPage: React.FC = () => {
         })
     }
     return (
-        <div className={styles.container}>
-            <div className={styles['condition-wrapper']}>
+        <div>
+            <StyledCondition>
                 <Button type="primary" onClick={() => setFormVisible(true)}>Create New subsystem</Button>
-            </div>
+            </StyledCondition>
             <Table
                 columns={[
                     { title: '#', key: 'number', render: (text, record, index) => index + 1 },

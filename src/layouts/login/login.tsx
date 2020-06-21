@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Card, Form, Input, Checkbox, message } from 'antd';
-import styles from './login.module.css';
-import Axios from '../../config/network';
 import HttpStatus from 'http-status-codes';
-import { useSession } from '../../contexts/session-context';
-import { Session } from '../../models/user';
+import Axios from 'config/network';
+import { useSession } from 'contexts/session-context';
+import { Session } from 'models/user';
+import gbImg from 'assets/images/cover-login.jpg';
 
+import styled from 'styled-components';
 
 
 const LoginLayout: React.FC = props => {
@@ -53,10 +54,10 @@ const LoginLayout: React.FC = props => {
     }
 
     return (
-        <div className={styles.container}>
-            <div className={styles['content-wrapper']}>
-                <h1 className={styles.title}>需求管理系统</h1>
-                <p className={styles['sub-title']}>本系统可以管理软件开发中的需求</p>
+        <Container>
+            <Content>
+                <Title>需求管理系统</Title>
+                <SubTitle>本系统可以管理软件开发中的需求</SubTitle>
                 <Card title="登陆" bordered={false} headStyle={{ width: 350, textAlign: "center" }} >
                     <Form
                         labelCol={{ span: 6 }}
@@ -81,16 +82,47 @@ const LoginLayout: React.FC = props => {
                         </Form.Item>
 
                         <Form.Item wrapperCol={{ span: 24 }} style={{ textAlign: "center" }}>
-                            <Button className={styles['login-form-button']} type="primary" loading={loading} htmlType="submit">
+                            <Button style={{paddingLeft: 50, paddingRight: 50}} type="primary" loading={loading} htmlType="submit">
                                 登陆
                                 </Button>
                         </Form.Item>
 
                     </Form>
                 </Card>
-            </div>
-        </div>
+            </Content>
+        </Container>
     );
 }
+
+const Container = styled.div`
+    width: 100%;
+    height: 100%;
+    background-image: url(${gbImg});
+    background-size: cover;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-color: #000000;
+`;
+
+const Content = styled.div`
+    padding-top: 5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`;
+
+const Title = styled.h1`
+    color: #ffffff;
+    font-size: 3rem;
+`;
+
+const SubTitle = styled.p`
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-bottom: 5rem;
+`;
+
 
 export default LoginLayout;

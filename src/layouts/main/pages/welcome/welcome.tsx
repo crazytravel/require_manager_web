@@ -1,11 +1,16 @@
 import React from 'react';
-import styles from './welcome.module.css';
+import styled from 'styled-components';
 
 const WelcomePage: React.FC = () => {
 
     return (
-        <h1 className={styles.container}>欢迎进入需求管理系统</h1>
+        <Content>欢迎进入需求管理系统</Content>
     )
 }
+
+const Content = styled.h1`
+    text-align: center;
+    font-size: 20px;
+`;
 
 export default WelcomePage;

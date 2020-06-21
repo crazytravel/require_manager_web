@@ -13,7 +13,7 @@ import {
     UsergroupAddOutlined,
     LockOutlined,
 } from '@ant-design/icons';
-import { MenuItem } from '../layouts/main/components/menu';
+import { MenuItem } from '../layouts/main/components/main-menu';
 
 
 export const menuData: MenuItem[] = [

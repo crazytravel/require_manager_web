@@ -5,7 +5,6 @@ import HttpStatus from 'http-status-codes';
 import Axios from 'config/network';
 import RoleSelect from './components/role-select';
 import { useFetch } from 'hooks/fetch';
-import styles from './user.module.css';
 
 const { confirm } = Modal;
 
@@ -77,7 +76,7 @@ const UserPage: React.FC = () => {
 
 
     return (
-        <div className={styles.container}>
+        <div>
             <Table
                 columns={[
                     { title: '#', key: 'number', render: (text, record, index) => index + 1 },

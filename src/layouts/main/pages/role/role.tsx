@@ -3,11 +3,12 @@ import { Button, message, Table, Modal, Tag } from 'antd';
 import RoleForm from './components/role-form';
 import AuthoritySelect from './components/authority-select';
 import { Authority } from 'models/authority';
-import styles from './role.module.css';
 import { useFetch } from 'hooks/fetch';
 import Axios from 'config/network';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import HttpStatus from 'http-status-codes';
+
+import { StyledCondition } from '../../components/styled';
 
 const { confirm } = Modal;
 
@@ -68,9 +69,9 @@ const RolePage: React.FC = () => {
 
     return (
         <div>
-            <div className={styles['condition-wrapper']}>
+            <StyledCondition>
                 <Button type="primary" onClick={() => setFormVisible(true)}>Create New Role</Button>
-            </div>
+            </StyledCondition>
             <Table
                 columns={[
                     { title: '#', key: 'number', width: 10, render: (text, record, index) => index + 1 },
@@ -107,5 +108,6 @@ const RolePage: React.FC = () => {
         </div>
     )
 }
+
 
 export default RolePage;

@@ -1,16 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logoImg from '../../../assets/images/logo@2x.png';
-import styles from './login-header.module.css';
+import styled from 'styled-components';
 
 const LoginHeader: React.FC = () => {
     return (
-        <header className={styles['header-wrapper']}>
-            <Link to="/">
-                {/* <img className={styles.logo} src={logoImg} alt="require manager" /> */}
-            </Link>
-        </header>
+        <Header><Link to="/" /></Header>
     )
 }
+
+const Header = styled.header`
+    display: flex;
+    flex-direction: row;
+    background-color: #222;
+    height: 100px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 100px;
+`;
 
 export default LoginHeader;

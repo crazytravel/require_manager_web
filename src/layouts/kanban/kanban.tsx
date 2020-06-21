@@ -1,40 +1,31 @@
 import React from 'react';
-import { Card, Row, Col, Tooltip, Button } from 'antd';
+import { Tooltip, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { SettingOutlined, LoadingOutlined } from '@ant-design/icons';
-
-import { useFetch } from 'hooks/fetch';
-import StorageImg from 'components/storage-img';
-import { Subsystem } from 'models/subsystem';
-import styles from './kanban.module.css';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import styled from 'styled-components';
 
 import AdminHeader from './components/kanban-header';
 import CardContainer from './components/card-container';
 import DragCard from './components/drag-card';
-import AddButton from './components/add-button';
-
-const { Meta } = Card;
-
-
 
 const AdminLayout: React.FC = props => {
 
-    const { loading, fetchedData } = useFetch<Subsystem[]>('/api/v1/subsystems/')
-
-
     return (
-        <div className={styles.container}>
+        <Container>
             <AdminHeader />
-            <div className={styles['subtitle']}>
+            <Subtitle>
                 <h3>KANBAN</h3>
                 <Link to="/main">
                     <Tooltip placement="bottom" title="Ask for Support">
                         <SettingOutlined style={{ fontSize: '2rem', color: 'rgba(0, 0, 0, 0.65)' }} />
                     </Tooltip>
                 </Link>
-            </div>
-            <div className={styles.wrapper}>
-                <div className={styles.content}>
+            </Subtitle>
+            <DndProvider backend={HTML5Backend}>
+            <ContentWrapper>
+                <Content>
                     <CardContainer title="代办">
                         <Link to="/main"><DragCard /></Link>
                         <Link to="/main"><DragCard /></Link>
@@ -46,20 +37,63 @@ const AdminLayout: React.FC = props => {
                     <CardContainer title="已完成">
                         <Link to="/main"><DragCard /></Link>
                     </CardContainer>
-                </div>
+                </Content>
                 <Button type="dashed" style={{width: 250, height: 40, marginLeft: 10}}> + 创建新列表</Button>
-            </div>
-        </div >
+            </ContentWrapper>
+            </DndProvider>
+        </Container >
     )
 }
 
 const Loading = () => {
     return (
-        <div className={styles['loading-container']}>
+        <LoadingContainer>
             <span><LoadingOutlined /></span>
-        </div>
+        </LoadingContainer>
     )
 }
 
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+`;
+
+const Subtitle = styled.div`
+    background-color: #fff;
+    height: 5rem;
+    line-height: 5rem;
+    padding: 0 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+`;
+
+const ContentWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    background-color: #f5f7f9;
+    overflow: auto;
+    padding: 15px;
+`;
+
+const Content = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+
+const LoadingContainer = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & > span {
+        font-size: 5rem;
+        color: rgba(0, 0, 0, 0.65);
+    }
+`;
 
 export default AdminLayout;
