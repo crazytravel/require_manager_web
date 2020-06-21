@@ -24,7 +24,7 @@ const interceptor = axios.interceptors.response.use(response => response, (error
         }
     }).catch(err => {
         if (err.response.status === 401) {
-            window.location.href = '/login';
+            window.location.href = '/sign-in';
             return;
         }
         return Promise.reject(err);

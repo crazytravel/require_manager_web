@@ -13,7 +13,8 @@ import {
 import ProtectedRoute from 'components/protected-route';
 import MainLayout from 'layouts/main/main';
 import KanbanLayout from 'layouts/kanban/kanban';
-import LoginLayout from 'layouts/login/login';
+import SignInLayout from 'layouts/sign/sign-in';
+import SignUpLayout from 'layouts/sign/sign-up';
 
 import { useSession } from 'contexts/session-context';
 
@@ -23,7 +24,8 @@ export const SystemRoutes: React.FC = () => {
             <ProtectedRoute path="/" exact><Redirect to="/kanban" /></ProtectedRoute>
             <ProtectedRoute path="/main" component={MainLayout} />
             <ProtectedRoute path="/kanban" exact component={KanbanLayout} />
-            <Route path="/login" component={LoginLayout} />
+            <Route path="/sign-in" component={SignInLayout} />
+            <Route path="/sign-up" component={SignUpLayout} />
             <Route><ErrorPage code={404} message="Page not found" /></Route>
         </Switch>
     )

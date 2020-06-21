@@ -31,7 +31,7 @@ export const useSession = () => {
             .then(res => {
                 if (res.status === HttpStatus.OK) {
                     setSession(initialSession());
-                    history.push('/login');
+                    history.push('/sign-in');
                 } else {
                     message.error('logout failed.');
                 }
