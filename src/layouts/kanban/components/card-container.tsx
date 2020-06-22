@@ -1,64 +1,88 @@
 import React, { useState } from 'react'
+import { Button } from 'antd';
 import { useDrop } from 'react-dnd'
 import styled from 'styled-components';
+import { DragItem } from './drag-card';
+import { useStage } from './stage-context';
 
 
 interface CardContainerProps {
-    title: string
+    id: string,
+    title: string,
 }
 
 
 const CardContainer: React.FC<CardContainerProps> = props => {
-
+    const { stages, setStages } = useStage();
+    const [height, setHeight] = useState<number>();
     const [hasDropped, setHasDropped] = useState(false);
     const [{ isOver, isOverCurrent }, drop] = useDrop({
         accept: 'card',
-        drop(item, monitor) {
-            const didDrop = monitor.didDrop()
+        drop(item: DragItem, monitor) {
+            const didDrop = monitor.didDrop();
             if (didDrop) {
                 return
             }
-            setHasDropped(true)
+            if (item.task.stageId === props.id) {
+                return;
+            }
+            setHasDropped(true);
+            const new_stage = stages.map(stage => {
+                if (stage.id === props.id) {
+                    stage.tasks.push(item.task);
+                }
+                if (stage.id === item.task.stageId) {
+                    stage.tasks = stage.tasks.filter(task => task.id !== item.task.id);
+                }
+                return stage;
+            });
+            setStages(new_stage);
+            setHeight(item.cardHeight);
         },
         collect: (monitor) => ({
             isOver: monitor.isOver(),
             isOverCurrent: monitor.isOver({ shallow: true }),
         }),
     });
-    let backgroundColor = 'rgba(0, 0, 0, .5)'
+    let backgroundColor = '';
 
     if (isOverCurrent || (isOver)) {
-        backgroundColor = 'darkgreen'
+        backgroundColor = 'rgba(0, 0, 0, .1)'
     }
     return (
-        <Container>
+        <Container ref={drop} >
             <Header>
                 <HeaderTitle>{props.title}</HeaderTitle>
                 <HeaderBtn>...</HeaderBtn>
             </Header>
-            <DropContainer ref={drop} style={{ backgroundColor }} >
+            <Content style={{ backgroundColor }} >
                 {props.children}
-                {hasDropped && <span>dropped</span>}
-            </DropContainer>
+            </Content>
+            <Bottom>
+                <Button type="text" style={{ width: '100%', height: 40 }}>+ 添加新任务</Button>
+            </Bottom>
         </Container>
     );
 }
 
 
 const Container = styled.div`
-    background-color: #eaecf0;
+    display: inline-block;
+    vertical-align: top;
+    background-color: #ebecf0;
     margin: 0 10px;
-    padding: 10;
     border-radius: 3;
-    overflow-x: auto;
+    overflow: hidden;
+    width: 280px;
+    border-radius: 3px;
 `;
 
 const Header = styled.div`
     display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        cursor: pointer;
-        padding: 5px;
+    flex-direction: row;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 6px 5px 0 15px;
 `;
 
 const HeaderTitle = styled.h3`
@@ -73,8 +97,15 @@ const HeaderBtn = styled.div`
     }
 `;
 
-const DropContainer = styled.div`
+const Content = styled.div`
+    flex: 1 1 auto;
+    padding: 0 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+`;
 
+const Bottom = styled.div`
+    text-align: center;
 `;
 
 export default CardContainer;

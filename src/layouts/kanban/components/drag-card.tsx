@@ -2,28 +2,37 @@ import React from 'react';
 import { Card } from 'antd';
 import { useDrag } from 'react-dnd';
 import styled from 'styled-components';
-import devopsImg from 'assets/images/cover-devops.jpg';
-
-const { Meta } = Card;
+import { Task } from 'models/kanban';
 
 
-const DragCard: React.FC = props => {
-    const [{ opacity }, dragRef] = useDrag({
-        item: { type: 'card' },
+export interface DragItem {
+    type: 'card' | 'box',
+    task: Task,
+    cardHeight: number,
+}
+
+interface DragCardProps {
+    task: Task,
+}
+
+const DragCard: React.FC<DragCardProps> = ({
+    task,
+}) => {
+    const [{ opacity, rotate }, dragRef] = useDrag({
+        item: { type: 'card', task},
         collect: (monitor) => ({
-            opacity: monitor.isDragging() ? 0.5 : 1
+            opacity: monitor.isDragging() ? 0 : 1,
+            rotate: monitor.isDragging() ? 10 : 0,
         })
     });
     return (
-        <Wrapper ref={dragRef} opacity={opacity}>
+        <Wrapper ref={dragRef} opacity={opacity} rotate={rotate} >
             <StyledCard
                 hoverable
                 bordered={false}
-                cover={
-                    <StyledImg src={devopsImg} alt="DevOps" />
-                }
+                bodyStyle={{ padding: 10 }}
             >
-                <StyledMeta title="DevOps Portal" />
+                <Text>{task.text}</Text>
             </StyledCard>
         </Wrapper>
 
@@ -32,27 +41,24 @@ const DragCard: React.FC = props => {
 
 interface WrapperProps {
     readonly opacity: number;
+    readonly rotate: number;
 }
 
 const Wrapper = styled.div<WrapperProps>`
-    margin: 10px 0;
     opacity: ${props => props.opacity};
+    transform: rotate(${props => props.rotate + 'deg'}); 
 `;
 
 const StyledCard = styled(Card)`
-    width: 250px;
-    text-align: center;
     overflow: hidden;
+    box-shadow: 0 1px 0 rgba(9,30,66,.25);
+    margin: 10px 0;
 `;
 
-const StyledImg = styled.img`
-    height: 100px; 
-    object-fit: cover;
-`;
-
-const StyledMeta = styled(Meta)`
-    overflow: hidden;
-    text-overflow: ellipsis;
+const Text = styled.span`
+    white-space: normal;
+    word-wrap:break-word;
+    word-break:break-all; 
 `;
 
 export default DragCard;

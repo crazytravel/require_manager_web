@@ -1,5 +1,5 @@
-import React from 'react';
-import { Tooltip, Button } from 'antd';
+import React, { useRef } from 'react';
+import { Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { SettingOutlined, LoadingOutlined } from '@ant-design/icons';
 import { DndProvider } from 'react-dnd';
@@ -7,11 +7,10 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import styled from 'styled-components';
 
 import AdminHeader from './components/kanban-header';
-import CardContainer from './components/card-container';
-import DragCard from './components/drag-card';
+import StageContextProvider from './components/stage-context';
 
 const AdminLayout: React.FC = props => {
-
+    const contentRef = useRef<HTMLDivElement>(null);
     return (
         <Container>
             <AdminHeader />
@@ -24,22 +23,12 @@ const AdminLayout: React.FC = props => {
                 </Link>
             </Subtitle>
             <DndProvider backend={HTML5Backend}>
-            <ContentWrapper>
-                <Content>
-                    <CardContainer title="代办">
-                        <Link to="/main"><DragCard /></Link>
-                        <Link to="/main"><DragCard /></Link>
-                        <Link to="/main"><DragCard /></Link>
-                    </CardContainer>
-                    <CardContainer title="开发中">
-                        <Link to="/main"><DragCard /></Link>
-                    </CardContainer>
-                    <CardContainer title="已完成">
-                        <Link to="/main"><DragCard /></Link>
-                    </CardContainer>
+                <Content ref={contentRef}>
+                    <StageContextProvider scroll={() => {
+                        console.log('执行')
+                        contentRef.current?.scrollIntoView({ block: 'end' });
+                    }} />
                 </Content>
-                <Button type="dashed" style={{width: 250, height: 40, marginLeft: 10}}> + 创建新列表</Button>
-            </ContentWrapper>
             </DndProvider>
         </Container >
     )
@@ -71,18 +60,15 @@ const Subtitle = styled.div`
     z-index: 10;
 `;
 
-const ContentWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    height: 100%;
-    background-color: #f5f7f9;
-    overflow: auto;
-    padding: 15px;
-`;
 
 const Content = styled.div`
-    display: flex;
-    flex-direction: row;
+    white-space: nowrap;
+    height: 100%;
+    background-color: #f5f7f9;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    padding: 15px;
 `;
 
 const LoadingContainer = styled.div`
