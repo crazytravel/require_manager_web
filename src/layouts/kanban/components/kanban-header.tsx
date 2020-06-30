@@ -2,7 +2,7 @@ import React from 'react'
 import { Dropdown, Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import { LogoutOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
-import { useSession } from '../../../contexts/session-context';
+import { useSession } from 'contexts/session-context';
 import styled from 'styled-components';
 
 const AdminHeader = () => {

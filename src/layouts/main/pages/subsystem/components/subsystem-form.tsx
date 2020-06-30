@@ -95,9 +95,9 @@ const SubsystemForm: React.FC<SubsystemFormProps> = props => {
     return (
         <Modal
             visible={props.visible}
-            title="Create a new Subsystem"
-            okText="Save"
-            cancelText="Cancel"
+            title="创建项目"
+            okText="保存"
+            cancelText="取消"
             onCancel={props.onCancel}
             onOk={okHandler}
         >
@@ -109,19 +109,19 @@ const SubsystemForm: React.FC<SubsystemFormProps> = props => {
                 name="form_in_modal"
                 initialValues={{ modifier: 'public' }}
             >
-                <Form.Item name="name" label="Name"
+                <Form.Item name="name" label="项目名称"
                     rules={[{ required: true, message: 'Please input the name!' }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="url" label="URL"
+                <Form.Item name="url" label="项目负责人"
                     rules={[{ required: true, message: 'Please input the url!' }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="description" label="Description"
+                <Form.Item name="description" label="项目简介"
                     rules={[{ required: true, message: 'Please input the description!' }]}>
                     <TextArea rows={4} />
                 </Form.Item>
-                <Form.Item name="media_id" label="Cover Image">
+                <Form.Item name="media_id" label="封面图">
                     <Upload
                         name="file"
                         accept="image/*"

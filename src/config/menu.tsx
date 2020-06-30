@@ -45,25 +45,10 @@ export const menuData: MenuItem[] = [
             }
         ]
     }, {
-        key: 'MENU_ITEM_VERSION',
+        key: 'project',
         text: '项目',
         icon: <UploadOutlined />,
-        link: '/main/version',
-    }, {
-        key: '需求',
-        text: 'Legal',
-        icon: <SafetyCertificateOutlined />,
-        link: '/main/legal'
-    }, {
-        key: '任务',
-        text: 'Gateway',
-        icon: <ApiOutlined />,
-        link: '/main/gateway'
-    }, {
-        key: 'MENU_ITEM_TOGGLE',
-        text: 'Toggle',
-        icon: <PushpinOutlined />,
-        link: '/main/toggle'
+        link: '/main/system/project',
     }, {
         key: 'MENU_ITEM_NOTICE',
         text: '系统设置',

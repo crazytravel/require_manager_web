@@ -4,7 +4,6 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import Axios from 'config/network';
 import { useFetch } from 'hooks/fetch';
 import { Subsystem } from 'models/subsystem';
-import StorageImg from 'components/storage-img';
 import SubSystemForm from './components/subsystem-form';
 import HttpStatus from 'http-status-codes';
 
@@ -49,19 +48,16 @@ const SubsystemPage: React.FC = () => {
     return (
         <div>
             <StyledCondition>
-                <Button type="primary" onClick={() => setFormVisible(true)}>Create New subsystem</Button>
+                <Button type="primary" onClick={() => setFormVisible(true)}>创建新项目</Button>
             </StyledCondition>
             <Table
                 columns={[
                     { title: '#', key: 'number', render: (text, record, index) => index + 1 },
-                    { title: 'name', key: 'name', dataIndex: 'name' },
-                    { title: 'description', key: 'description', dataIndex: 'description' },
-                    { title: 'url', key: 'url', dataIndex: 'url' },
+                    { title: '项目名称', key: 'name', dataIndex: 'name' },
+                    { title: '简单介绍', key: 'description', dataIndex: 'description' },
+                    { title: '项目负责人', key: 'description', dataIndex: 'description' },
                     {
-                        title: 'cover image', key: 'media_id', dataIndex: 'media_id',
-                        render: (text, record) => <StorageImg mediaId={record.media_id} style={{ height: 50 }} />
-                    }, {
-                        title: 'Action', key: 'action',
+                        title: '操作', key: 'action',
                         render: (text, record) => <Button onClick={() => handleDeleteAction(record.id)} type="link">Delete</Button>
                     },
                 ]}

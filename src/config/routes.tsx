@@ -39,9 +39,8 @@ export const MainRoutes: React.FC = () => {
         <Switch>
             <Route path="/main" exact><Redirect to="/main/welcome" /></Route>
             <Route path="/main/welcome" component={WelcomePage} />
-            <Route path="/main/system/subsystem" render={() =>
-                authorities?.includes('MENU_ITEM_SYSTEM_SUBSYSTEM') ?
-                    <SubsystemPage /> : <ErrorPage code={401} message="Forbidden access this page" />
+            <Route path="/main/system/project" render={() =>
+                    <SubsystemPage />
             } />
             <Route path="/main/system/user" render={() =>
                 authorities?.includes('MENU_ITEM_SYSTEM_ACCOUNT_USER') ?

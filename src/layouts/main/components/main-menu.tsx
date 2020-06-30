@@ -41,6 +41,7 @@ const MainMenu: React.FC<MainMenuProps> = ({
 
     useEffect(() => {
         const currentPath = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
+        console.log(currentPath)
         setSelectedKeys([currentPath]);
         const item = findItemByKey(menuData, currentPath);
         if (item) {
@@ -51,9 +52,9 @@ const MainMenu: React.FC<MainMenuProps> = ({
     const recursion = (data: MenuItem[]) => {
         return (
             data.map(item => {
-                if (!auth.session.authorities?.includes(item.key) && item.key !== 'welcome') {
-                    return null;
-                }
+                // if (!auth.session.authorities?.includes(item.key) && item.key !== 'welcome') {
+                //     return null;
+                // }
                 if (item.children) {
                     return (
                         <Menu.SubMenu key={item.key} title={<span>{item.icon}<span>{item.text}</span></span>}>
