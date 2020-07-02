@@ -98,8 +98,6 @@ const Header = styled.div`
     justify-content: space-between;
     cursor: pointer;
     padding: 6px 5px 0 15px;
-    height: 36px;
-
 `;
 
 const Title = styled.h3`
@@ -129,7 +127,6 @@ const Content = styled.div<ContentProps>`
 `;
 
 const Bottom = styled.div`
-    height: 40px;
     text-align: center;
     background-color: ${defaultBackgroundColor};
 `;
