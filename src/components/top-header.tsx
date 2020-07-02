@@ -32,7 +32,7 @@ const Header = styled.header`
     display: flex;
     flex-direction: row;
     background-color: #222;
-    height: 8rem;
+    height: 50px;
     align-items: center;
     justify-content: space-between;
     padding: 0 3rem;

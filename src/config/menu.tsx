@@ -19,10 +19,10 @@ import { MenuItem } from '../layouts/main/components/main-menu';
 
 export const menuData: MenuItem[] = [
     {
-        key: 'kanban',
-        text: '看板',
-        icon: <FundOutlined />,
-        link: '/main/kanban',
+        key: 'welcome',
+        text: '欢迎',
+        icon: <SmileOutlined />,
+        link: '/main/welcome',
     }, {
         key: 'project',
         text: '项目管理',

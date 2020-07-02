@@ -41,7 +41,6 @@ const MainMenu: React.FC<MainMenuProps> = ({
 
     useEffect(() => {
         const currentPath = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
-        console.log(currentPath)
         setSelectedKeys([currentPath]);
         const item = findItemByKey(menuData, currentPath);
         if (item) {

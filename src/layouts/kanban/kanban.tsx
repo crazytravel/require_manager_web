@@ -104,21 +104,28 @@ const KanbanLayout: React.FC = props => {
         })
     }
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
-            <Container>
-                {fakeStageOrders.map((stageId: string, index: number) => {
-                    const currentStage = stages[stageId];
-                    const currentTasks = currentStage.taskIds.map(taskId => tasks[taskId]);
-                    return <Column
-                        key={currentStage.id}
-                        id={currentStage.id}
-                        index={index}
-                        projectId={''}
-                        title={currentStage.text}
-                        tasks={currentTasks} />
-                })}
-            </Container>
-        </DragDropContext>
+        <Layout style={{ height: '100%' }}>
+            <TopHeader />
+            <Toolbar />
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Container>
+                    <Content>
+                    {fakeStageOrders.map((stageId: string, index: number) => {
+                        const currentStage = stages[stageId];
+                        const currentTasks = currentStage.taskIds.map(taskId => tasks[taskId]);
+                        return <Column
+                            key={currentStage.id}
+                            id={currentStage.id}
+                            index={index}
+                            projectId={''}
+                            title={currentStage.text}
+                            tasks={currentTasks} />
+                    })}
+                    </Content>
+                </Container>
+            </DragDropContext>
+        </Layout>
+
     )
 }
 
@@ -130,15 +137,26 @@ const Loading = () => {
     )
 }
 
+const Layout = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+`;
+
 
 const Container = styled.div`
+    padding: 20px;
+    flex: 1;
+    height: 0;
+    overflow-y: hidden;
+    overflow-x: auto;
+`;
+
+const Content = styled.div`
     display: inline-flex;
-    /* white-space: nowrap; */
     height: 100%;
-    /* background-color: #f5f7f9; */
-    /* overflow: auto; */
-    /* flex-wrap: nowrap; */
-    /* padding: 15px; */
 `;
 
 const LoadingContainer = styled.div`

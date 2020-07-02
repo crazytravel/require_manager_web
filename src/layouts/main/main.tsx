@@ -16,16 +16,19 @@ const MainLayout: React.FC = () => {
     return (
         <Layout style={{ height: '100%' }}>
             <TopHeader />
-            {/* <Toolbar /> */}
+            <Toolbar />
             <Container>
                 <Sidebar>
                     <MainMenu menuData={menuData} selectCallback={item => {
                         setSelectedMenu(item);
                     }} />
                 </Sidebar>
-                <Content>
-                    <MainRoutes />
-                </Content>
+                <Wrapper>
+                    <Content>
+                        <MainRoutes />
+                    </Content>
+                </Wrapper>
+
             </Container>
         </Layout>
     );
@@ -52,12 +55,21 @@ const Sidebar = styled.div`
     min-width: 200px;
     max-width: 200px;
 `;
-const Content = styled.div`
+
+const Wrapper = styled.div`
     flex: 1;
     width: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+`;
+const Content = styled.div`
     background-color: #fff;
     margin: 15px;
     padding: 15px;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex: 1;
+    height: 0;
 `;
 export default MainLayout;

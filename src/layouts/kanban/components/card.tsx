@@ -46,6 +46,7 @@ const Wrapper = styled.div<WrapperProps>`
     margin-bottom: 10px;
     background-color: ${props => props.isDragging ? '#AED581' : '#fff'};
     padding: 10px;
+    border-radius: 2px;
 `;
 
 const Content = styled.span`

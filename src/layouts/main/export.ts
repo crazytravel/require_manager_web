@@ -1,5 +1,4 @@
 import WelcomePage from './pages/welcome/welcome';
-import KanbanPage from './pages/kanban/kanban';
 import UserPage from './pages/user/user';
 import VersionPage from './pages/version/version';
 import GatewayPage from './pages/gateway/gateway';
@@ -10,7 +9,6 @@ import ErrorPage from './pages/error/error';
 
 export {
     WelcomePage,
-    KanbanPage,
     UserPage,
     VersionPage,
     GatewayPage,
