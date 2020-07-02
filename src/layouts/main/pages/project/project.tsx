@@ -4,14 +4,14 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import Axios from 'config/network';
 import { useFetch } from 'hooks/fetch';
 import { Subsystem } from 'models/subsystem';
-import SubSystemForm from './components/subsystem-form';
+import SubSystemForm from './components/project-form';
 import HttpStatus from 'http-status-codes';
 
 import {StyledCondition} from '../../components/styled';
 
 const { confirm } = Modal;
 
-const SubsystemPage: React.FC = () => {
+const ProjectPage: React.FC = () => {
     const [formVisible, setFormVisible] = useState(false);
     const [deleteId, setDeleteId] = useState<number>();
     const [createdId, setCreatedId] = useState<number>();
@@ -72,4 +72,4 @@ const SubsystemPage: React.FC = () => {
     )
 }
 
-export default SubsystemPage;
+export default ProjectPage;

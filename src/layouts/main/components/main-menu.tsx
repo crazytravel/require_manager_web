@@ -73,7 +73,7 @@ const MainMenu: React.FC<MainMenuProps> = ({
     }
 
     return (
-        <Menu theme="dark" mode="inline"
+        <Menu theme="light" mode="inline" style={{height: '100%'}}
             selectedKeys={selectedKeys}
             defaultOpenKeys={openedKeys}>
             {recursion(menuData)}
