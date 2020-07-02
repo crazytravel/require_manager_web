@@ -123,7 +123,7 @@ const Content = styled.div<ContentProps>`
     overflow-y: auto;
     transition: background-color .2s ease;
     background-color: ${props => props.isDraggingOver ? '#BBDEFB' : defaultBackgroundColor};
-    min-height: 100px;
+    /* min-height: 60px; */
 `;
 
 const Bottom = styled.div`
