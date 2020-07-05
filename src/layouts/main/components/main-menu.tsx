@@ -19,7 +19,7 @@ export type MenuMap = Record<string, MenuItemWithParent>;
 
 interface MainMenuProps {
     menuData: MenuItem[];
-    selectCallback: (item: MenuItem) => void
+    selectCallback?: (item: MenuItem) => void
 }
 
 
@@ -43,7 +43,7 @@ const MainMenu: React.FC<MainMenuProps> = ({
         const currentPath = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
         setSelectedKeys([currentPath]);
         const item = findItemByKey(menuData, currentPath);
-        if (item) {
+        if (item && selectCallback) {
             selectCallback(item);
         }
     }, [location, menuData, selectCallback]);

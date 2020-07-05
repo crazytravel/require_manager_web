@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
-import { } from 'antd';
+import React from 'react';
 import styled from 'styled-components';
 
 import TopHeader from 'components/top-header';
 import Toolbar from 'components/toolbar';
-import MainMenu, { MenuItem } from './components/main-menu';
+import MainMenu from './components/main-menu';
 import { menuData } from 'config/menu';
 import { MainRoutes } from 'config/routes';
 
 
 const MainLayout: React.FC = () => {
 
-    const [selectedMenu, setSelectedMenu] = useState<MenuItem>();
 
     return (
         <Layout style={{ height: '100%' }}>
@@ -19,9 +17,7 @@ const MainLayout: React.FC = () => {
             <Toolbar />
             <Container>
                 <Sidebar>
-                    <MainMenu menuData={menuData} selectCallback={item => {
-                        setSelectedMenu(item);
-                    }} />
+                    <MainMenu menuData={menuData} />
                 </Sidebar>
                 <Wrapper>
                     <Content>

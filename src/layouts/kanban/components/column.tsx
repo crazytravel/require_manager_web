@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Input, message } from 'antd';
 import {
-    DragDropContext,
     Droppable,
-    Draggable,
-    DropResult,
-    DraggableProvided,
-    DraggableStateSnapshot,
     DroppableProvided,
     DroppableStateSnapshot
 } from "react-beautiful-dnd";
@@ -15,29 +10,31 @@ import HttpStatus from 'http-status-codes';
 import { Task } from 'models/kanban';
 import Card from './card';
 import axios from 'config/network';
+import { useFetch } from 'hooks/fetch';
+import { time, timeStamp } from 'console';
 
 const { TextArea } = Input;
 
 interface ColumnProps {
-    id: string,
-    index: number,
+    stageId: string,
     title: string,
-    tasks: Task[],
-    projectId: string,
+    projectId?: string,
+    changeTimestamp?: number,
 }
 
 
 const Column: React.FC<ColumnProps> = ({
-    id, index, title, tasks, projectId
+    stageId, title, projectId, changeTimestamp
 }) => {
     const [isCreating, setIsCreating] = useState(false);
     const [taskText, setTaskText] = useState<string>();
+    const { loading, fetchedData } = useFetch<Task []>(`/api/v1/stages/${stageId}/tasks`, [stageId, changeTimestamp]);
     const handleOnConfirmCreateTask = () => {
         setIsCreating(false);
         if (!taskText) {
             return;
         }
-        axios.post("/api/v1/tasks", { content: taskText, projectId, stageId: id })
+        axios.post("/api/v1/tasks", { content: taskText, projectId, stageId: stageId })
             .then(res => {
                 if (res.status !== HttpStatus.CREATED) {
                     setTaskText('');
@@ -51,13 +48,13 @@ const Column: React.FC<ColumnProps> = ({
     return (
         <Container>
             <Header><Title>{title}</Title><HeaderBtn>...</HeaderBtn></Header>
-            <Droppable droppableId={id}>
+            <Droppable droppableId={stageId}>
                 {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
                     <Content ref={provided.innerRef}
                         isDraggingOver={snapshot.isDraggingOver}
                         {...provided.droppableProps}>
-                        {tasks.map((task: Task, index: number) =>
-                            <Card id={task.id} task={task.text} index={index} key={task.id} />)}
+                        {fetchedData?.map((task: Task, index: number) =>
+                            <Card id={task.id} content={task.content} index={index} key={task.id} />)}
                         {provided.placeholder}
                     </Content>
                 )}

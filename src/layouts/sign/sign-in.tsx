@@ -7,8 +7,6 @@ import { useSession } from 'contexts/session-context';
 import { Session } from 'models/user';
 import SignContainer from './components/sign-container';
 
-import styled from 'styled-components';
-
 
 const SignInLayout: React.FC = props => {
 

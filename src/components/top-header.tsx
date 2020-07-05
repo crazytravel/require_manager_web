@@ -47,9 +47,6 @@ const TextLogo = styled.h1`
     color: #fff;
 `;
 
-const MenuBar = styled.div`
-`;
-
 const DropdownLink = styled.span`
     cursor: pointer;
     font-size: 1.5rem;

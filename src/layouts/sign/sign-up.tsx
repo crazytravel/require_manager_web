@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
-import { Button, Card, Form, Input, Checkbox, message } from 'antd';
+import { Button, Card, Form, Input, message } from 'antd';
 import HttpStatus from 'http-status-codes';
 import Axios from 'config/network';
 import { useSession } from 'contexts/session-context';
 import { Session } from 'models/user';
 import SignContainer from './components/sign-container';
-
-import styled from 'styled-components';
 
 
 const SignUpLayout: React.FC = props => {

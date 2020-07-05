@@ -1,18 +1,12 @@
 import React from 'react';
 import {
-    ApiOutlined,
-    PushpinOutlined,
-    SafetyCertificateOutlined,
     SmileOutlined,
     UploadOutlined,
     UserOutlined,
     TeamOutlined,
-    WarningOutlined,
     SettingOutlined,
-    AppstoreOutlined,
     UsergroupAddOutlined,
     LockOutlined,
-    FundOutlined,
 } from '@ant-design/icons';
 import { MenuItem } from '../layouts/main/components/main-menu';
 

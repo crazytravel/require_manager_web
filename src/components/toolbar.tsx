@@ -1,53 +1,60 @@
 import React, { useState, useEffect } from 'react'
-import { Dropdown, Menu, Tooltip, Button, message } from 'antd';
+import { Select, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
-import { FundOutlined, SettingOutlined, AppstoreOutlined, DownOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
-import { useSession } from 'contexts/session-context';
+import { FundOutlined, AppstoreOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import { Config } from 'config/config';
 import { ClickParam } from 'antd/lib/menu';
+import { Project } from 'models/kanban';
+import { useFetch } from 'hooks/fetch';
 
+const { Option } = Select;
 
-const Toolbar = () => {
+interface ToolbarProps {
+    activeProjectId?: string,
+    onFinish?: (projectId: string) => void,
+}
+
+const Toolbar: React.FC<ToolbarProps> = ({
+    activeProjectId,
+    onFinish
+}) => {
     const { pathname } = useLocation();
     let currentPath = pathname.substring(pathname.indexOf('/') + 1);
     if (currentPath !== 'kanban') {
         currentPath = 'main';
     }
-    console.log(currentPath)
+    
+    const [currentPage, setCurrentPage] = useState<string>(currentPath);
+    const [searchValue, setSearchValue] = useState<string>(activeProjectId || '');
+
     useEffect(() => {
         let currentPath = pathname.substring(pathname.indexOf('/') + 1);
         if (currentPath !== 'kanban') {
             currentPath = 'main';
         }
         setCurrentPage(currentPath);
-    }, [pathname]);
-    const { logout, session } = useSession();
-    const [currentPage, setCurrentPage] = useState<string>(currentPath);
-    const handleLogout = () => {
-        logout();
-    }
-    const handleProjectClick = (e: ClickParam) => {
-        console.log('click', e);
-    }
+        setSearchValue(activeProjectId || '');
+    }, [pathname, activeProjectId]);
+
+    const { loading, fetchedData } = useFetch<Project[]>(`/api/v1/projects`, []);
 
     const handleMenuClick = (e: ClickParam) => {
         setCurrentPage(e.key);
     }
 
-    const menu = (
-        <Menu onClick={handleProjectClick}>
-            <Menu.Item key="1">
-                1st menu item
-          </Menu.Item>
-            <Menu.Item key="2">
-                2nd menu item
-          </Menu.Item>
-            <Menu.Item key="3">
-                3rd item
-          </Menu.Item>
-        </Menu>
-    );
+    const handleSearch = (value: string) => {
+        setSearchValue(value);
+    };
+
+    const handleChange = (value: string) => {
+        setSearchValue(value);
+        console.log('刷新', value);
+        if (onFinish) {
+            onFinish(value);
+        }
+    }
+
+    const options = fetchedData?.map(project => <Option value={project.id} key={project.id}>{project.name}</Option>);
 
     return (
         <Subtitle>
@@ -59,32 +66,27 @@ const Toolbar = () => {
                     <Link to="/main">系统管理</Link>
                 </Menu.Item>
             </Menu>
+            {/* <Divider type="vertical" /> */}
             <MenuContainer>
                 {currentPage === 'kanban' ?
-                    <>
-                        <Title>纽扣资源管理项目</Title>
-                        <Dropdown overlay={menu}>
-                            <Button>更换项目 <DownOutlined /></Button>
-                        </Dropdown>
-                    </>
+                    <Condition>
+                        搜索项目：
+                        <Select
+                            showSearch
+                            value={searchValue}
+                            style={{ width: 200 }}
+                            placeholder="选择项目"
+                            optionFilterProp="children"
+                            onChange={handleChange}
+                            onSearch={handleSearch}
+                            filterOption={false}
+                            notFoundContent={null}
+                        >
+                            {options}
+                        </Select>
+                    </Condition>
                     : ''}
-
             </MenuContainer>
-            {/* <ToolContainer>
-                <LinkBtn to="/kanban">
-                    <Tooltip placement="bottom" title="Ask for Support">
-                        <FundOutlined style={{ fontSize: '2rem', color: 'rgba(0, 0, 0, 0.65)' }} />
-                    </Tooltip>
-                    看板
-                </LinkBtn>
-                <LinkBtn to="/main">
-                    <Tooltip placement="bottom" title="Ask for Support">
-                        <SettingOutlined style={{ fontSize: '2rem', color: 'rgba(0, 0, 0, 0.65)' }} />
-                    </Tooltip>
-                    设置
-                </LinkBtn>
-            </ToolContainer> */}
-
         </Subtitle>
     )
 }
@@ -96,6 +98,7 @@ const Subtitle = styled.div`
     padding: 0 15px;
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
     z-index: 10;
@@ -105,25 +108,12 @@ const MenuContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin: 0 10px;
 `;
 
-const Title = styled.h3`
-    margin: 0 10px 0 0;
-    padding: 0;
+const Condition = styled.div`
+    
 `;
 
-const ToolContainer = styled.div`
-    flex: 1;
-    width: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-`;
-
-const LinkBtn = styled(Link)`
-    margin-left: 20px;
-    color: rgba(0, 0, 0, 0.65);
-`;
 
 export default Toolbar;

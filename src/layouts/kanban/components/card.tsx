@@ -1,8 +1,7 @@
-import React, { ProviderProps } from 'react';
-import { DragDropContext, Droppable, Draggable, DropResult, DraggableStateSnapshot, DraggableProvided } from "react-beautiful-dnd";
+import React from 'react';
+import { Draggable, DraggableStateSnapshot, DraggableProvided } from "react-beautiful-dnd";
 import styled from 'styled-components';
 import { Task } from 'models/kanban';
-
 
 
 export interface DragItem {
@@ -14,13 +13,13 @@ export interface DragItem {
 interface CardProps {
     id: string,
     index: number,
-    task: string,
+    content: string,
 }
 
 const Card: React.FC<CardProps> = ({
     id,
     index,
-    task,
+    content,
 }) => {
     return (
         <Draggable draggableId={id} index={index}>
@@ -29,7 +28,7 @@ const Card: React.FC<CardProps> = ({
                     isDragging={snapshot.isDragging}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}>
-                    <Content>{task}</Content>
+                    <Content>{content}</Content>
                 </Wrapper>
             )}
         </Draggable>
