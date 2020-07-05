@@ -5,14 +5,15 @@ import { Stage } from 'models/kanban';
 import HttpStatus from 'http-status-codes';
 
 
-interface SubsystemFormProps {
-    visible: boolean;
-    onSave: (values: any) => void;
-    onCancel: () => void;
-    data?: Stage;
+interface StageFormProps {
+    visible: boolean,
+    onSave: (values: any) => void,
+    onCancel: () => void,
+    projectId: string | null,
+    data?: Stage,
 }
 
-const StageForm: React.FC<SubsystemFormProps> = props => {
+const StageForm: React.FC<StageFormProps> = props => {
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -30,7 +31,7 @@ const StageForm: React.FC<SubsystemFormProps> = props => {
                     message.error("修改失败! : ", err.message);
                 });
         } else {
-            Axios.post("/api/v1/stages", { ...values, projectId: props.data?.projectId })
+            Axios.post("/api/v1/stages", { ...values, projectId: props.projectId })
                 .then(res => {
                     if (res.status === HttpStatus.CREATED) {
                         props.onSave(res.data);

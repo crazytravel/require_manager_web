@@ -11,7 +11,7 @@ import styled from 'styled-components';
 
 const { confirm } = Modal;
 
-const ProjectPage: React.FC = props => {
+const StagePage: React.FC = props => {
     const history = useHistory();
     const { search } = useLocation();
     const searchParams = new URLSearchParams(search);
@@ -101,7 +101,7 @@ const ProjectPage: React.FC = props => {
                     {
                         title: '操作', key: 'action',
                         render: (text, record, index) => {
-                            if (index === 0) {
+                            if (index === 0 && record.nextId !== '-1') {
                                 return <div>
                                     <Button onClick={() => handleUpdateAction(record.id)} type="link">修改</Button>
                                     <Divider type="vertical" />
@@ -109,13 +109,19 @@ const ProjectPage: React.FC = props => {
                                     <Divider type="vertical" />
                                     <Button onClick={() => handleDownAction(record.id)} type="link"><ArrowDownOutlined /></Button>
                                 </div>
-                            } else if (record.nextId === '-1') {
+                            } else if (index !== 0 && record.nextId === '-1') {
                                 return <div>
                                     <Button onClick={() => handleUpdateAction(record.id)} type="link">修改</Button>
                                     <Divider type="vertical" />
                                     <Button onClick={() => handleDeleteAction(record.id)} type="link">删除</Button>
                                     <Divider type="vertical" />
                                     <Button onClick={() => handleUpAction(record.id)} type="link"><ArrowUpOutlined /></Button>
+                                </div>
+                            } else if (index === 0 && record.nextId === '-1') {
+                                return <div>
+                                    <Button onClick={() => handleUpdateAction(record.id)} type="link">修改</Button>
+                                    <Divider type="vertical" />
+                                    <Button onClick={() => handleDeleteAction(record.id)} type="link">删除</Button>
                                 </div>
                             } else {
                                 return <div>
@@ -136,7 +142,7 @@ const ProjectPage: React.FC = props => {
                 pagination={false}
                 loading={loading}
             />
-            <StageForm data={formData} visible={formVisible} onCancel={() => setFormVisible(false)} onSave={saveHandler} />
+            <StageForm projectId={projectId} data={formData} visible={formVisible} onCancel={() => setFormVisible(false)} onSave={saveHandler} />
         </div>
     )
 }
@@ -149,4 +155,4 @@ const StyledCondition = styled.div`
     margin: 0 0 10px 0;
 `;
 
-export default ProjectPage;
+export default StagePage;

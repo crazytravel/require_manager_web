@@ -36,7 +36,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
         setSearchValue(activeProjectId || '');
     }, [pathname, activeProjectId]);
 
-    const { loading, fetchedData } = useFetch<Project[]>(`/api/v1/projects`, []);
+    const { fetchedData } = useFetch<Project[]>(`/api/v1/projects`, []);
 
     const handleMenuClick = (e: ClickParam) => {
         setCurrentPage(e.key);

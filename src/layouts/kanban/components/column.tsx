@@ -28,7 +28,7 @@ const Column: React.FC<ColumnProps> = ({
     const [changeTime, setChangeTime] = useState<number | undefined>();
     const [isCreating, setIsCreating] = useState(false);
     const [taskText, setTaskText] = useState<string>();
-    const { loading, fetchedData } = useFetch<Task[]>(`/api/v1/stages/${stageId}/tasks`, [stageId, changeTimestamp, changeTime]);
+    const { fetchedData } = useFetch<Task[]>(`/api/v1/stages/${stageId}/tasks`, [stageId, changeTimestamp, changeTime]);
     const handleOnConfirmCreateTask = () => {
         setIsCreating(false);
         if (!taskText) {
@@ -56,7 +56,10 @@ const Column: React.FC<ColumnProps> = ({
                         isDraggingOver={snapshot.isDraggingOver}
                         {...provided.droppableProps}>
                         {fetchedData?.map((task: Task, index: number) =>
-                            <Card id={task.id} content={task.content} index={index} key={task.id} />)}
+                            <Card onOperatorSuccess={() => {
+                                const timestamp = new Date().getTime();
+                                setChangeTime(timestamp);
+                            }} id={task.id} content={task.content} index={index} key={task.id} />)}
                         {provided.placeholder}
                     </Content>
                 )}
