@@ -11,7 +11,6 @@ import { Task } from 'models/kanban';
 import Card from './card';
 import axios from 'config/network';
 import { useFetch } from 'hooks/fetch';
-import { time, timeStamp } from 'console';
 
 const { TextArea } = Input;
 
@@ -26,17 +25,20 @@ interface ColumnProps {
 const Column: React.FC<ColumnProps> = ({
     stageId, title, projectId, changeTimestamp
 }) => {
+    const [changeTime, setChangeTime] = useState<number | undefined>();
     const [isCreating, setIsCreating] = useState(false);
     const [taskText, setTaskText] = useState<string>();
-    const { loading, fetchedData } = useFetch<Task []>(`/api/v1/stages/${stageId}/tasks`, [stageId, changeTimestamp]);
+    const { loading, fetchedData } = useFetch<Task[]>(`/api/v1/stages/${stageId}/tasks`, [stageId, changeTimestamp, changeTime]);
     const handleOnConfirmCreateTask = () => {
         setIsCreating(false);
         if (!taskText) {
             return;
         }
-        axios.post("/api/v1/tasks", { content: taskText, projectId, stageId: stageId })
+        axios.post("/api/v1/tasks", { content: taskText, projectId, stageId })
             .then(res => {
-                if (res.status !== HttpStatus.CREATED) {
+                if (res.status === HttpStatus.CREATED) {
+                    const timestamp = new Date().getTime();
+                    setChangeTime(timestamp);
                     setTaskText('');
                 }
             })
@@ -60,7 +62,7 @@ const Column: React.FC<ColumnProps> = ({
                 )}
             </Droppable>
             <Bottom>
-                {isCreating ? <TextArea autoSize={{ minRows: 2 }} onInput={(e) => setTaskText(e.currentTarget.value)} value={taskText} />
+                {isCreating ? <TextArea autoFocus={true} autoSize={{ minRows: 2 }} onInput={(e) => setTaskText(e.currentTarget.value)} value={taskText} />
                     : <Button type="text" onClick={() => setIsCreating(true)} style={{ width: '100%', height: 40 }}>+ 添加新任务</Button>}
             </Bottom>
             {isCreating ?

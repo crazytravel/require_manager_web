@@ -1,7 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
-import { useSession } from 'contexts/session-context';
 
 export interface MenuItem {
     key: string;
@@ -35,9 +34,6 @@ const MainMenu: React.FC<MainMenuProps> = ({
     findParentsByKey(menuData, menuMap, currentPath, openedKeys);
 
     const [selectedKeys, setSelectedKeys] = useState<string[]>();
-    const auth = useSession();
-    
-
 
     useEffect(() => {
         const currentPath = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);

@@ -7,6 +7,7 @@ import {
     RolePage,
     AuthorityPage,
     ErrorPage,
+    StagePage,
 } from 'layouts/main/export';
 import ProtectedRoute from 'components/protected-route';
 import MainLayout from 'layouts/main/main';
@@ -38,6 +39,9 @@ export const MainRoutes: React.FC = () => {
             <Route path="/main/welcome" component={WelcomePage} />
             <Route path="/main/project" render={() =>
                     <ProjectPage />
+            } />
+            <Route path="/main/stage" render={() =>
+                    <StagePage />
             } />
             <Route path="/main/user" render={() =>
                 authorities?.includes('MENU_ITEM_SYSTEM_ACCOUNT_USER') ?

@@ -1,41 +1,55 @@
 import React, { useState } from 'react';
-import { Table, Button, Modal, message } from 'antd';
+import { useHistory } from 'react-router-dom';
+import { Table, Button, Modal, message, Divider, Tag } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import Axios from 'config/network';
+import axios from 'config/network';
 import { useFetch } from 'hooks/fetch';
-import { Subsystem } from 'models/subsystem';
-import SubSystemForm from './components/project-form';
+import { Project } from 'models/kanban';
+import ProjectForm from './components/project-form';
 import HttpStatus from 'http-status-codes';
 
-import {StyledCondition} from '../../components/styled';
+import { StyledCondition } from '../../components/styled';
 
 const { confirm } = Modal;
 
 const ProjectPage: React.FC = () => {
+    const history = useHistory();
     const [formVisible, setFormVisible] = useState(false);
-    const [deleteId, setDeleteId] = useState<number>();
-    const [createdId, setCreatedId] = useState<number>();
-    const { loading, fetchedData } = useFetch<Subsystem[]>('/api/v1/subsystems/', [deleteId, createdId]);
+    const [changeTimestamp, setChangeTimestamp] = useState<number>();
+    const { loading, fetchedData } = useFetch<Project[]>('/api/v1/projects', [changeTimestamp]);
 
-    const saveHandler = (values: Subsystem) => {
+    const saveHandler = (values: Project) => {
         setFormVisible(false);
-        setCreatedId(values.id);
-        message.success('Save Succeed!');
+        const timestamp = new Date().getTime();
+        setChangeTimestamp(timestamp);
+        message.success('创建成功！');
     }
 
-    const handleDeleteAction = (id: number) => {
+    const handleActiveAction = (id: string) => {
+        axios.patch(`/api/v1/projects/${id}/active`)
+            .then(res => {
+                if (res.status === HttpStatus.OK) {
+                    const timestamp = new Date().getTime();
+                    setChangeTimestamp(timestamp);
+                    message.success('设置成功!');
+                }
+            }).catch(err => message.error(err.message));
+    }
+
+    const handleDeleteAction = (id: string) => {
         confirm({
-            title: 'Are you sure delete this subsystem?',
+            title: '确定删除当前记录？',
             icon: <ExclamationCircleOutlined />,
-            okText: 'Yes',
+            okText: '确定',
             okType: 'primary',
-            cancelText: 'No',
+            cancelText: '取消',
             onOk() {
-                Axios.delete('/api/v1/subsystems/' + id)
+                axios.delete('/api/v1/projects/' + id)
                     .then(res => {
                         if (res.status === HttpStatus.NO_CONTENT) {
-                            setDeleteId(id);
-                            message.success('delete succeed!');
+                            const timestamp = new Date().getTime();
+                            setChangeTimestamp(timestamp);
+                            message.success('删除成功!');
                         }
                     })
                     .catch(err => {
@@ -45,6 +59,14 @@ const ProjectPage: React.FC = () => {
             },
         })
     }
+
+    const handleHandleOverAction = (id: string) => {
+
+    }
+
+    const handleStageAction = (id: string) => {
+        history.push('/main/stage?projectId=' + id);
+    }
     return (
         <div>
             <StyledCondition>
@@ -53,12 +75,27 @@ const ProjectPage: React.FC = () => {
             <Table
                 columns={[
                     { title: '#', key: 'number', render: (text, record, index) => index + 1 },
+                    { title: '项目编号', key: 'code', dataIndex: 'code' },
                     { title: '项目名称', key: 'name', dataIndex: 'name' },
                     { title: '简单介绍', key: 'description', dataIndex: 'description' },
-                    { title: '项目负责人', key: 'description', dataIndex: 'description' },
+                    { title: '默认项目', key: 'active', render: (text, record) => record.active === true ? <Tag color="green">是</Tag> : <Tag color="default">否</Tag> },
                     {
                         title: '操作', key: 'action',
-                        render: (text, record) => <Button onClick={() => handleDeleteAction(record.id)} type="link">Delete</Button>
+                        render: (text, record) => {
+                            return record.active ? <div>
+                                <Button onClick={() => handleStageAction(record.id)} type="link">阶段管理</Button>
+                                <Divider type="vertical" />
+                                <Button onClick={() => handleHandleOverAction(record.id)} type="link">移交项目</Button>
+                            </div>
+                                : <div>
+                                    <Button onClick={() => handleStageAction(record.id)} type="link">阶段管理</Button>
+                                    <Button onClick={() => handleActiveAction(record.id)} type="link">设为默认</Button>
+                                    <Divider type="vertical" />
+                                    <Button onClick={() => handleHandleOverAction(record.id)} type="link">移交项目</Button>
+                                    <Divider type="vertical" />
+                                    <Button onClick={() => handleDeleteAction(record.id)} type="link">删除</Button>
+                                </div>
+                        }
                     },
                 ]}
                 rowKey={record => record.id}
@@ -66,7 +103,7 @@ const ProjectPage: React.FC = () => {
                 pagination={false}
                 loading={loading}
             />
-            <SubSystemForm visible={formVisible} onCancel={() => setFormVisible(false)} onSave={saveHandler} />
+            <ProjectForm visible={formVisible} onCancel={() => setFormVisible(false)} onSave={saveHandler} />
         </div>
 
     )

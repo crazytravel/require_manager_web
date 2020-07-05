@@ -1,5 +1,6 @@
 
 export interface Session {
+    id: string;
     logged_in: boolean;
     username: string;
     nickname?: string;

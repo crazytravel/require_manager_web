@@ -12,16 +12,14 @@ export interface Task {
     content: string,
     stageId?: string,
     projectId?: string,
-    previousId?: string,
     nextId?: string,
 }
 
 export interface Stage {
     id: string,
     name: string,
-    previousId?: string,
+    projectId: string,
     nextId?: string,
-    taskIds?: string[],
 }
 
 export interface TaskMap {

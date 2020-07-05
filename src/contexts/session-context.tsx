@@ -7,6 +7,7 @@ import HttpStatus from 'http-status-codes';
 
 const initialSession = () => {
     const session: Session = {
+        id: '',
         logged_in: false,
         username: '',
         nickname: '',
@@ -47,6 +48,7 @@ const SessionContextProvider: React.FC = props => {
 
     const prevSession = initialSession();
     prevSession.logged_in = (localStorage.getItem('logged_in') === 'true') || false;
+    prevSession.id = localStorage.getItem('id') || '';
     prevSession.username = localStorage.getItem('username') || '';
     prevSession.nickname = localStorage.getItem('nick_name') || '';
     prevSession.authorities = localStorage.getItem('authorities')?.split(',') || [];
@@ -54,6 +56,7 @@ const SessionContextProvider: React.FC = props => {
     useEffect(
         () => {
             localStorage.setItem('logged_in', session.logged_in.toString());
+            localStorage.setItem('id', session.id);
             localStorage.setItem('username', session.username);
             localStorage.setItem('nick_name', session.nickname || '');
             localStorage.setItem('authorities', session.authorities ? session.authorities!.join(',') : '');

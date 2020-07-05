@@ -1,61 +1,35 @@
-import React, { useState } from 'react';
-import { Modal, Form, Input, Upload, message } from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import React from 'react';
+import { Modal, Form, Input, message } from 'antd';
 import Axios from 'config/network';
-import { Subsystem } from 'models/subsystem';
-import { UploadChangeParam } from 'antd/lib/upload/interface';
+import { Project } from 'models/kanban';
 import HttpStatus from 'http-status-codes';
+import { useSession } from 'contexts/session-context';
 
 
 const { TextArea } = Input;
 
-interface SubsystemFormProps {
+interface ProjectFormProps {
     visible: boolean;
     onSave: (values: any) => void;
     onCancel: () => void;
-    data?: Subsystem;
+    data?: Project;
 }
 
-const getBase64 = (img: File | Blob | undefined, callback: (url: string | ArrayBuffer | null) => void) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img!);
-}
+const ProjectForm: React.FC<ProjectFormProps> = props => {
 
-const beforeUpload = (file: Blob) => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJpgOrPng) {
-        message.error('You can only upload JPG/PNG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-        message.error('Image must smaller than 2MB!');
-    }
-    return isJpgOrPng && isLt2M;
-}
-
-
-const SubsystemForm: React.FC<SubsystemFormProps> = props => {
-
-    const [loading, setLoading] = useState(false);
-    const [imgUrl, setImgUrl] = useState<string>();
-    const [mediaId, setMediaId] = useState<string>();
+    const { session } = useSession();
     const [form] = Form.useForm();
 
-    const saveData = async (values: any) => {
-        if (!mediaId) {
-            message.error('please upload a picture!');
-            return;
-        }
-        values['media_id'] = mediaId;
-        console.log(values)
-        const res = await Axios.post("/api/v1/subsystems/", { ...values });
-        if (res.status === HttpStatus.CREATED) {
-            props.onSave(res.data);
-        } else {
-            console.error(res);
-            message.error("save data failed");
-        }
+    const saveData = (values: any) => {
+        console.log(values);
+        Axios.post("/api/v1/projects/", { ...values, ownerUserId: session.id})
+        .then(res => {
+            if (res.status === HttpStatus.CREATED) {
+                props.onSave(res.data);
+            }    
+        }).catch(err => {
+            message.error("创建项目失败! error: ", err.message);
+        });
     }
 
     const okHandler = () => {
@@ -63,34 +37,10 @@ const SubsystemForm: React.FC<SubsystemFormProps> = props => {
             .then(values => {
                 saveData(values);
             })
-            .catch(info => {
-                console.log('Validate Failed:', info);
+            .catch(err => {
+                message.error(err);
             });
     }
-
-    const handleChange = (info: UploadChangeParam) => {
-        if (info.file.status === 'uploading') {
-            setLoading(false);
-            return;
-        }
-        if (info.file.status === 'done') {
-            // Get this url from response in real world.
-            getBase64(info.file.originFileObj, imageUrl => {
-                setImgUrl(imageUrl as string);
-                setLoading(false);
-            });
-            console.log("上传结果", info.file.response)
-            setMediaId(info.file.response?.id)
-        }
-    };
-
-    const uploadButton = (
-        <div>
-            {loading ? <LoadingOutlined /> : <PlusOutlined />}
-            <div className="ant-upload-text">Upload</div>
-        </div>
-    );
-
 
     return (
         <Modal
@@ -109,36 +59,21 @@ const SubsystemForm: React.FC<SubsystemFormProps> = props => {
                 name="form_in_modal"
                 initialValues={{ modifier: 'public' }}
             >
-                <Form.Item name="name" label="项目名称"
-                    rules={[{ required: true, message: 'Please input the name!' }]}>
+                <Form.Item name="code" label="项目编号"
+                    rules={[{ required: true, message: '请输入项目编号' }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="url" label="项目负责人"
-                    rules={[{ required: true, message: 'Please input the url!' }]}>
+                <Form.Item name="name" label="项目名称"
+                    rules={[{ required: true, message: '请输入项目名称' }]}>
                     <Input />
                 </Form.Item>
                 <Form.Item name="description" label="项目简介"
-                    rules={[{ required: true, message: 'Please input the description!' }]}>
+                    rules={[{ required: true, message: '请输入项目简介' }]}>
                     <TextArea rows={4} />
-                </Form.Item>
-                <Form.Item name="media_id" label="封面图">
-                    <Upload
-                        name="file"
-                        accept="image/*"
-                        listType="picture-card"
-                        action="/admin/storage/api/v1/files/upload?featureName=VEDA&publicAccess=true"
-                        multiple={true}
-                        className="avatar-uploader"
-                        showUploadList={false}
-                        beforeUpload={beforeUpload}
-                        onChange={handleChange}
-                    >
-                        {imgUrl ? <img src={imgUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-                    </Upload>
                 </Form.Item>
             </Form>
         </Modal >
     )
 }
 
-export default SubsystemForm;
+export default ProjectForm;
