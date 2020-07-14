@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Card, Form, Input, Checkbox, message } from 'antd';
 import HttpStatus from 'http-status-codes';
 import Axios from 'config/network';
@@ -12,14 +12,7 @@ const SignInLayout: React.FC = props => {
 
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
-    const { login, session } = useSession();
-    const history = useHistory();
-
-    useEffect(() => {
-        if (session.logged_in) {
-            history.push('/');
-        }
-    }, [history, session]);
+    const { login } = useSession();
 
     const onFinish = () => {
         setLoading(true);

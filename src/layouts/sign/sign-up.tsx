@@ -25,7 +25,7 @@ const SignUpLayout: React.FC = props => {
         setLoading(true);
         form.validateFields()
             .then(values => {
-                Axios.post("/api/auth/register", { ...values })
+                Axios.post("/api/auth/sign-up", { ...values })
                     .then(res => {
                         if (res.status === HttpStatus.OK) {
                             getUserInfo();
@@ -61,7 +61,11 @@ const SignUpLayout: React.FC = props => {
                     name="login"
                     initialValues={{ remember: true }}
                     onFinish={onFinish}
-                >
+                >   
+                    <Form.Item name="nickname" label="昵称"
+                        rules={[{ required: true, message: '请输入昵称' }]}>
+                        <Input />
+                    </Form.Item>
                     <Form.Item name="username" label="用户名"
                         rules={[{ required: true, message: '请输入用户名' }]}>
                         <Input />

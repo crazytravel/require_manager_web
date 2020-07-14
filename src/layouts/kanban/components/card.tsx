@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Modal, message, Input } from 'antd';
-import { EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Button, Modal, message, Input, Menu, Dropdown } from 'antd';
+import { EditOutlined, ExclamationCircleOutlined, UserOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Draggable, DraggableStateSnapshot, DraggableProvided } from "react-beautiful-dnd";
 import styled from 'styled-components';
 import HttpStatus from 'http-status-codes';
@@ -9,6 +9,7 @@ import axios from 'config/network';
 
 const { TextArea } = Input;
 const { confirm } = Modal;
+
 
 export interface DragItem {
     type: 'card' | 'box',
@@ -71,7 +72,7 @@ const Card: React.FC<CardProps> = ({
         setShowEdit(false);
     }
 
-    const handleOnDelete = () => [
+    const handleOnDelete = () => {
         confirm({
             title: '确定删除当前记录？',
             icon: <ExclamationCircleOutlined />,
@@ -80,21 +81,43 @@ const Card: React.FC<CardProps> = ({
             cancelText: '取消',
             onOk() {
                 axios.delete('/api/v1/tasks/' + id)
-                .then(res => {
-                    if (res.status === HttpStatus.NO_CONTENT) {
-                        message.success('操作成功!');
-                        // refresh 
-                        onOperatorSuccess();
-                    }
-                }).catch(err => {
-                    message.error('操作失败!', err.message);
-                }).finally(() => {
-                    setShowForm(false);
-                })
+                    .then(res => {
+                        if (res.status === HttpStatus.NO_CONTENT) {
+                            message.success('操作成功!');
+                            // refresh 
+                            onOperatorSuccess();
+                        }
+                    }).catch(err => {
+                        message.error('操作失败!', err.message);
+                    }).finally(() => {
+                        setShowForm(false);
+                    })
             },
         })
-        
-    ]
+    }
+
+    const handleAssignUser = () => {
+
+    //     return (
+    //         // <Modal
+    //         //     visible={props.visible}
+    //         //     title="人员分配"
+    //         //     okText="保存"
+    //         //     cancelText="取消"
+    //         //     onCancel={props.onCancel}
+    //         //     onOk={okHandler}
+    //         // >
+    //         // </Modal>
+    //     )
+    }
+
+    const menu = (
+        <Menu>
+            <Menu.Item icon={<UserOutlined />} onClick={handleAssignUser} >分配人员</Menu.Item>
+            <Menu.Item icon={<EditOutlined />} onClick={handleEditAction} >编辑</Menu.Item>
+            <Menu.Item icon={<DeleteOutlined />} onClick={handleOnDelete} danger>删除</Menu.Item>
+        </Menu>
+    );
     return (
         <Draggable draggableId={id} index={index}>
             {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
@@ -105,7 +128,9 @@ const Card: React.FC<CardProps> = ({
                     <Content>{readonlyContent}</Content>
                     <Overlay onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
                         {showEdit ? <ButtonWrapper>
-                            <Button style={{ color: 'rgba(0, 0, 0, 0.65)' }} type="link" onClick={handleEditAction}><EditOutlined /></Button>
+                            <Dropdown overlay={menu} >
+                                <Button style={{ color: 'rgba(0, 0, 0, 0.65)' }} type="link" onClick={handleEditAction}><EditOutlined /></Button>
+                            </Dropdown>
                         </ButtonWrapper>
                             : ''}
                     </Overlay>
@@ -115,7 +140,6 @@ const Card: React.FC<CardProps> = ({
                     </Bottom>
                     {showForm ?
                         <FormButtonWrapper>
-                            <Button type="primary" danger onClick={handleOnDelete} style={{ alignSelf: 'flex-start' }}>删除</Button>
                             <EditButtonWrapper>
                                 <Button type="default" onClick={handleOnCancel} >取消</Button>
                                 <Button type="primary" onClick={handleOnSave} style={{ marginLeft: 5 }}>保存</Button>
@@ -181,7 +205,7 @@ const FormButtonWrapper = styled.div`
     padding: 5px 0;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
 `;
 
 const EditButtonWrapper = styled.div`

@@ -21,13 +21,21 @@ const interceptor = axios.interceptors.response.use(response => response, (error
         if (res.status === 200) {
             console.log('success response: ', originalRequest);
             return axios(originalRequest);
-        }
+        } 
     }).catch(err => {
+        console.log('错误',err.response.status === 401)
         if (err.response.status === 401) {
-            window.location.href = '/sign-in';
-            return;
+            axios.post('/api/auth/logout').finally(() => {
+                localStorage.removeItem('logged_in');
+                localStorage.removeItem('id');
+                localStorage.removeItem('username');
+                localStorage.removeItem('nick_name');
+                localStorage.removeItem('authorities');
+                window.location.href = '/sign-in';
+            });
+        } else {
+            return Promise.reject(err);
         }
-        return Promise.reject(err);
     });
 });
 

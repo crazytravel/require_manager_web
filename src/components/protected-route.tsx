@@ -6,10 +6,8 @@ const ProtectedRoute: React.FC<RouteProps> = props => {
 
     const { session } = useSession();
 
-    const developMode = process.env.NODE_ENV
-
-    if (!session.username && developMode === 'production') {
-        return <Redirect to="/login" />;
+    if (!session.username) {
+        return <Redirect to="/sign-in" />;
     } else {
         return <Route {...props} />;
     }

@@ -19,7 +19,7 @@ import { useSession } from 'contexts/session-context';
 export const SystemRoutes: React.FC = () => {
     return (
         <Switch>
-            <ProtectedRoute path="/" exact><Redirect to="/main" /></ProtectedRoute>
+            <ProtectedRoute path="/" exact><Redirect to="/kanban" /></ProtectedRoute>
             <ProtectedRoute path="/kanban" component={KanbanLayout} />
             <ProtectedRoute path="/main" component={MainLayout} />
             <Route path="/sign-in" component={SignInLayout} />
