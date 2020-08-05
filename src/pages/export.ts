@@ -9,6 +9,7 @@ import ErrorPage from './error/error';
 import KanbanPage from './kanban/kanban';
 import SignInPage from './auth/sign-in';
 import SignUpPage from './auth/sign-up';
+import SettingsPage from './settings/settings';
 
 export {
     WelcomePage,
@@ -22,4 +23,5 @@ export {
     KanbanPage,
     SignInPage,
     SignUpPage,
+    SettingsPage,
 }

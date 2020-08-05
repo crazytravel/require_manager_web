@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import TopHeader from 'components/top-header';
 import Toolbar from 'components/toolbar';
 import MainMenu from 'components/main-menu';
-import { menuData } from 'common/menu';
+import { generateMenu } from 'common/menu-config';
 import { MainRoutes } from 'common/routes';
 
 
@@ -15,7 +15,7 @@ const MainLayout: React.FC = () => {
             <Toolbar />
             <Container>
                 <Sidebar>
-                    <MainMenu menuData={menuData} />
+                    <MainMenu menuData={generateMenu()} />
                 </Sidebar>
                 <Wrapper>
                     <Content>

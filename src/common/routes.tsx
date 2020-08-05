@@ -11,6 +11,7 @@ import {
     KanbanPage,
     SignInPage,
     SignUpPage,
+    SettingsPage,
 } from 'pages/export';
 import ProtectedRoute from './protected-route';
 import MainLayout from 'layouts/main';
@@ -62,6 +63,10 @@ export const Routes = {
             authority: {
                 path: '/main/authority',
                 component: AuthorityPage,
+            },
+            settings: {
+                path: '/main/settings',
+                component: SettingsPage,
             }
         }
     }
