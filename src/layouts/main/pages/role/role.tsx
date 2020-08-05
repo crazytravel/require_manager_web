@@ -3,8 +3,8 @@ import { Button, message, Table, Modal, Tag } from 'antd';
 import RoleForm from './components/role-form';
 import AuthoritySelect from './components/authority-select';
 import { Authority } from 'models/authority';
-import { useFetch } from 'hooks/fetch';
-import Axios from 'config/network';
+import { useFetch } from 'common/fetch-hook';
+import Axios from 'common/network';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import HttpStatus from 'http-status-codes';
 

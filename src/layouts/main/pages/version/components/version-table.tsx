@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Table, Button, Modal, message } from 'antd';
-import { useFetch } from 'hooks/fetch';
+import { useFetch } from 'common/fetch-hook';
 import { VersionData } from 'models/version';
-import Axios from 'config/network';
+import Axios from 'common/network';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import HttpStatus from 'http-status-codes';
 

@@ -5,7 +5,8 @@ import { FundOutlined, AppstoreOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { ClickParam } from 'antd/lib/menu';
 import { Project } from 'models/kanban';
-import { useFetch } from 'hooks/fetch';
+import { useFetch } from 'common/fetch-hook';
+import { Routes } from 'common/routes';
 
 const { Option } = Select;
 
@@ -23,7 +24,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
     if (currentPath !== 'kanban') {
         currentPath = 'main';
     }
-    
+
     const [currentPage, setCurrentPage] = useState<string>(currentPath);
     const [searchValue, setSearchValue] = useState<string>(activeProjectId || '');
 
@@ -60,10 +61,10 @@ const Toolbar: React.FC<ToolbarProps> = ({
         <Subtitle>
             <Menu onClick={handleMenuClick} selectedKeys={[currentPage]} mode="horizontal">
                 <Menu.Item key="kanban" icon={<FundOutlined />}>
-                    <Link to="/kanban">看板</Link>
+                    <Link to={Routes.kanban.path}>看板</Link>
                 </Menu.Item>
                 <Menu.Item key="main" icon={<AppstoreOutlined />}>
-                    <Link to="/main">系统管理</Link>
+                    <Link to={Routes.main.path}>系统管理</Link>
                 </Menu.Item>
             </Menu>
             {/* <Divider type="vertical" /> */}

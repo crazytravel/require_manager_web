@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { SystemRoutes } from './config/routes';
-import SessionContextProvider from './contexts/session-context';
+import { RootRoutes } from 'common/routes';
+import SessionContextProvider from 'common/session-context';
 import './index.less';
 // import * as serviceWorker from './serviceWorker';
 
@@ -12,7 +12,7 @@ const App: React.FC = () => {
     return (
       <SessionContextProvider>
         <BrowserRouter basename={baseURL} >
-          <SystemRoutes />
+          <RootRoutes />
         </BrowserRouter>
       </SessionContextProvider>
     );

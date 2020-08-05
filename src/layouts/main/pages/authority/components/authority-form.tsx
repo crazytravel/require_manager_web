@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Form, Input, message } from 'antd';
-import Axios from 'config/network';
+import Axios from 'common/network';
 import { Authority } from 'models/authority';
 import HttpStatus from 'http-status-codes';
 

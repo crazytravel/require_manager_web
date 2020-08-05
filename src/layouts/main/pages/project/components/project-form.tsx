@@ -1,9 +1,9 @@
 import React from 'react';
 import { Modal, Form, Input, message } from 'antd';
-import Axios from 'config/network';
+import Axios from 'common/network';
 import { Project } from 'models/kanban';
 import HttpStatus from 'http-status-codes';
-import { useSession } from 'contexts/session-context';
+import { useSession } from 'common/session-context';
 
 
 const { TextArea } = Input;

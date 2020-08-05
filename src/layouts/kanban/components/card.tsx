@@ -5,7 +5,8 @@ import { Draggable, DraggableStateSnapshot, DraggableProvided } from "react-beau
 import styled from 'styled-components';
 import HttpStatus from 'http-status-codes';
 import { Task } from 'models/kanban';
-import axios from 'config/network';
+import axios from 'common/network';
+import AssignUser from './assign-user';
 
 const { TextArea } = Input;
 const { confirm } = Modal;
@@ -21,6 +22,7 @@ interface CardProps {
     id: string,
     index: number,
     content: string,
+    projectId: string,
     onOperatorSuccess: () => void,
 }
 
@@ -28,11 +30,13 @@ const Card: React.FC<CardProps> = ({
     id,
     index,
     content,
+    projectId,
     onOperatorSuccess,
 }) => {
 
     const [showEdit, setShowEdit] = useState<boolean>(false);
     const [showForm, setShowForm] = useState<boolean>(false);
+    const [showAssignUser, setShowAssignUser] = useState<boolean>(false);
     const [readonlyContent, setReadonlyContent] = useState<string>(content);
     const [editContent, setEditContent] = useState<string>(content);
 
@@ -97,18 +101,8 @@ const Card: React.FC<CardProps> = ({
     }
 
     const handleAssignUser = () => {
+        setShowAssignUser(true);
 
-    //     return (
-    //         // <Modal
-    //         //     visible={props.visible}
-    //         //     title="人员分配"
-    //         //     okText="保存"
-    //         //     cancelText="取消"
-    //         //     onCancel={props.onCancel}
-    //         //     onOk={okHandler}
-    //         // >
-    //         // </Modal>
-    //     )
     }
 
     const menu = (
@@ -119,36 +113,41 @@ const Card: React.FC<CardProps> = ({
         </Menu>
     );
     return (
-        <Draggable draggableId={id} index={index}>
-            {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
-                <Wrapper ref={provided.innerRef}
-                    isDragging={snapshot.isDragging}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}>
-                    <Content>{readonlyContent}</Content>
-                    <Overlay onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
-                        {showEdit ? <ButtonWrapper>
-                            <Dropdown overlay={menu} >
-                                <Button style={{ color: 'rgba(0, 0, 0, 0.65)' }} type="link" onClick={handleEditAction}><EditOutlined /></Button>
-                            </Dropdown>
-                        </ButtonWrapper>
-                            : ''}
-                    </Overlay>
-                    <Bottom>
-                        {showForm ? <TextArea autoFocus={true} autoSize={{ minRows: 2 }} onInput={(e) => setEditContent(e.currentTarget.value)} value={editContent} />
-                            : ''}
-                    </Bottom>
-                    {showForm ?
-                        <FormButtonWrapper>
-                            <EditButtonWrapper>
-                                <Button type="default" onClick={handleOnCancel} >取消</Button>
-                                <Button type="primary" onClick={handleOnSave} style={{ marginLeft: 5 }}>保存</Button>
-                            </EditButtonWrapper>
-                        </FormButtonWrapper> : ''
-                    }
-                </Wrapper>
-            )}
-        </Draggable>
+        <>
+            <Draggable draggableId={id} index={index}>
+                {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+                    <Wrapper ref={provided.innerRef}
+                        isDragging={snapshot.isDragging}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}>
+                        <Content>{readonlyContent}</Content>
+                        <Overlay onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+                            {showEdit ? <ButtonWrapper>
+                                <Dropdown overlay={menu} >
+                                    <Button style={{ color: 'rgba(0, 0, 0, 0.65)' }} type="link" onClick={handleEditAction}><EditOutlined /></Button>
+                                </Dropdown>
+                            </ButtonWrapper>
+                                : ''}
+                        </Overlay>
+                        <Bottom>
+                            {showForm ? <TextArea autoFocus={true} autoSize={{ minRows: 2 }} onInput={(e) => setEditContent(e.currentTarget.value)} value={editContent} />
+                                : ''}
+                        </Bottom>
+                        {showForm ?
+                            <FormButtonWrapper>
+                                <EditButtonWrapper>
+                                    <Button type="default" onClick={handleOnCancel} >取消</Button>
+                                    <Button type="primary" onClick={handleOnSave} style={{ marginLeft: 5 }}>保存</Button>
+                                </EditButtonWrapper>
+                            </FormButtonWrapper> : ''
+                        }
+                    </Wrapper>
+                )}
+            </Draggable>
+            <AssignUser visible={showAssignUser} projectId={projectId} 
+            onCancel={() => setShowAssignUser(false)} 
+            onOk={() => setShowAssignUser(false)} />
+        </>
     )
 }
 

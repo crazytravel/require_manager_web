@@ -7,7 +7,7 @@ import Column from './components/column';
 import TopHeader from 'components/top-header';
 import Toolbar from 'components/toolbar';
 import { Project, Stage } from 'models/kanban';
-import axios from 'config/network';
+import axios from 'common/network';
 import { message } from 'antd';
 
 
@@ -30,7 +30,7 @@ const KanbanLayout: React.FC = props => {
                     }
                 }
             }).catch(err => {
-                message.error(err);
+                console.log(err)
             });
     }, []);
 

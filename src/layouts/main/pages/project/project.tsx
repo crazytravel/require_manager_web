@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Table, Button, Modal, message, Divider, Tag } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import axios from 'config/network';
-import { useFetch } from 'hooks/fetch';
+import axios from 'common/network';
+import { useFetch } from 'common/fetch-hook';
 import { Project } from 'models/kanban';
 import ProjectForm from './components/project-form';
 import HttpStatus from 'http-status-codes';
+import AssignUser from './components/assign-user';
 
 import { StyledCondition } from '../../components/styled';
 
@@ -15,6 +16,8 @@ const { confirm } = Modal;
 const ProjectPage: React.FC = () => {
     const history = useHistory();
     const [formVisible, setFormVisible] = useState(false);
+    const [projectId, setProjectId] = useState<string>();
+    const [showAssignUser, setShowAssignUser] = useState<boolean>(false);
     const [changeTimestamp, setChangeTimestamp] = useState<number>();
     const { loading, fetchedData } = useFetch<Project[]>('/api/v1/projects', [changeTimestamp]);
 
@@ -60,8 +63,9 @@ const ProjectPage: React.FC = () => {
         })
     }
 
-    const handleHandleOverAction = (id: string) => {
-
+    const handleAssignUserAction = (id: string) => {
+        setShowAssignUser(true);
+        setProjectId(id);
     }
 
     const handleStageAction = (id: string) => {
@@ -78,20 +82,22 @@ const ProjectPage: React.FC = () => {
                     { title: '项目编号', key: 'code', dataIndex: 'code' },
                     { title: '项目名称', key: 'name', dataIndex: 'name' },
                     { title: '简单介绍', key: 'description', dataIndex: 'description' },
-                    { title: '默认项目', key: 'active', render: (text, record) => record.active === true ? <Tag color="green">是</Tag> : <Tag color="default">否</Tag> },
+                    { title: '默认项目', key: 'active', render: (text, record) => record.active ? <Tag color="green">是</Tag> : <Tag color="default">否</Tag> },
                     {
                         title: '操作', key: 'action',
                         render: (text, record) => {
                             return record.active ? <div>
                                 <Button onClick={() => handleStageAction(record.id)} type="link">阶段管理</Button>
                                 <Divider type="vertical" />
-                                <Button onClick={() => handleHandleOverAction(record.id)} type="link">移交项目</Button>
+                                {/* <Button onClick={() => handleAssignUserAction(record.id)} type="link">移交项目</Button> */}
+                                <Button onClick={() => handleAssignUserAction(record.id)} type="link">人员管理</Button>
                             </div>
                                 : <div>
                                     <Button onClick={() => handleStageAction(record.id)} type="link">阶段管理</Button>
                                     <Button onClick={() => handleActiveAction(record.id)} type="link">设为默认</Button>
                                     <Divider type="vertical" />
-                                    <Button onClick={() => handleHandleOverAction(record.id)} type="link">移交项目</Button>
+                                    <Button onClick={() => handleAssignUserAction(record.id)} type="link">人员管理</Button>
+                                    {/* <Button onClick={() => handleAssignUserAction(record.id)} type="link">移交项目</Button> */}
                                     <Divider type="vertical" />
                                     <Button onClick={() => handleDeleteAction(record.id)} type="link">删除</Button>
                                 </div>
@@ -104,6 +110,9 @@ const ProjectPage: React.FC = () => {
                 loading={loading}
             />
             <ProjectForm visible={formVisible} onCancel={() => setFormVisible(false)} onSave={saveHandler} />
+            <AssignUser visible={showAssignUser} projectId={projectId}
+                onCancel={() => setShowAssignUser(false)}
+                onOk={() => setShowAssignUser(false)} />
         </div>
 
     )

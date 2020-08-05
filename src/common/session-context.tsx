@@ -1,9 +1,10 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { Session } from '../models/user';
 import { useHistory } from 'react-router-dom';
-import Axios from '../config/network';
+import Axios from './network';
 import { message } from 'antd';
 import HttpStatus from 'http-status-codes';
+import { Routes } from './routes';
 
 const initialSession = () => {
     const session: Session = {
@@ -32,7 +33,7 @@ export const useSession = () => {
             .then(res => {
                 if (res.status === HttpStatus.OK) {
                     setSession(initialSession());
-                    history.push('/sign-in');
+                    history.push(Routes.signIn.path);
                 } else {
                     message.error('logout failed.');
                 }

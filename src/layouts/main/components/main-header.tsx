@@ -10,7 +10,7 @@ import {
     HomeOutlined
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { useSession } from 'contexts/session-context';
+import { useSession } from 'common/session-context';
 
 import styled from 'styled-components';
 

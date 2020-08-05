@@ -9,8 +9,8 @@ import styled from 'styled-components';
 import HttpStatus from 'http-status-codes';
 import { Task } from 'models/kanban';
 import Card from './card';
-import axios from 'config/network';
-import { useFetch } from 'hooks/fetch';
+import axios from 'common/network';
+import { useFetch } from 'common/fetch-hook';
 
 const { TextArea } = Input;
 
@@ -56,7 +56,7 @@ const Column: React.FC<ColumnProps> = ({
                         isDraggingOver={snapshot.isDraggingOver}
                         {...provided.droppableProps}>
                         {fetchedData?.map((task: Task, index: number) =>
-                            <Card onOperatorSuccess={() => {
+                            <Card projectId={projectId || ''} onOperatorSuccess={() => {
                                 const timestamp = new Date().getTime();
                                 setChangeTime(timestamp);
                             }} id={task.id} content={task.content} index={index} key={task.id} />)}

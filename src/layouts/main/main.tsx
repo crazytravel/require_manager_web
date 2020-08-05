@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import TopHeader from 'components/top-header';
 import Toolbar from 'components/toolbar';
 import MainMenu from './components/main-menu';
-import { menuData } from 'config/menu';
-import { MainRoutes } from 'config/routes';
+import { menuData } from 'common/menu';
+import { MainRoutes } from 'common/routes';
 
 
 const MainLayout: React.FC = () => {

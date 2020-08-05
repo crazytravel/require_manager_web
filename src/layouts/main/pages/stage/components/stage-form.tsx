@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, message } from 'antd';
-import Axios from 'config/network';
+import Axios from 'common/network';
 import { Stage } from 'models/kanban';
 import HttpStatus from 'http-status-codes';
 

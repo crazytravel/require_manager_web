@@ -1,23 +1,28 @@
 import React from 'react'
 import { Dropdown, Menu } from 'antd';
-import { Link } from 'react-router-dom';
-import { LogoutOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
-import { useSession } from 'contexts/session-context';
+import { Link, useHistory } from 'react-router-dom';
+import { LogoutOutlined, DownOutlined, UserOutlined } from '@ant-design/icons';
+import { useSession } from 'common/session-context';
 import styled from 'styled-components';
-import { Config } from 'config/config';
+import { Config } from 'common/config';
+import { Routes } from 'common/routes';
 
 const TopHeader = () => {
+    const history = useHistory();
     const { logout, session } = useSession();
     const handleLogout = () => {
         logout();
+    }
+    const handleProfile = () => {
+        history.push(Routes.main.routes.user.path);
     }
     return (
         <Header>
             <Link to="/"><TextLogo>{Config.PROJECT_NAME}</TextLogo></Link>
             <Dropdown overlay={
                 <Menu>
-                    <Menu.Item key="0"><Link to="/main/user"><EditOutlined /><span>Modify Password</span></Link></Menu.Item>
-                    <Menu.Item key="1" onClick={handleLogout}><LogoutOutlined /><span>Logout</span></Menu.Item>
+                    <Menu.Item key="0" onClick={handleProfile}><UserOutlined /><span>个人信息</span></Menu.Item>
+                    <Menu.Item key="1" onClick={handleLogout}><LogoutOutlined /><span>登出</span></Menu.Item>
                 </Menu>
             } placement="bottomRight">
                 <DropdownLink>

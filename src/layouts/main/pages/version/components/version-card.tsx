@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Row, Col } from 'antd';
 import { AppleFilled, AndroidFilled } from '@ant-design/icons';
-import { useFetch } from 'hooks/fetch';
+import { useFetch } from 'common/fetch-hook';
 import { VersionData } from 'models/version';
 
 interface VersionCardProps {

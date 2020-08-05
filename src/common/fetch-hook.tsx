@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { message } from 'antd';
-import axios from '../config/network';
+import axios from './network';
 import HttpStatus from 'http-status-codes';
 
 export function useFetch<T = undefined>(url: string, deps?: any[]) {

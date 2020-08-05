@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Form, Input, Radio, Checkbox, message } from 'antd';
 import { VersionData } from 'models/version';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import Axios from 'config/network';
+import Axios from 'common/network';
 import HttpStatus from 'http-status-codes';
 
 const { confirm } = Modal;
