@@ -3,16 +3,14 @@ import styled from 'styled-components';
 
 import TopHeader from 'components/top-header';
 import Toolbar from 'components/toolbar';
-import MainMenu from './components/main-menu';
+import MainMenu from 'components/main-menu';
 import { menuData } from 'common/menu';
 import { MainRoutes } from 'common/routes';
 
 
 const MainLayout: React.FC = () => {
-
-
     return (
-        <Layout style={{ height: '100%' }}>
+        <Layout>
             <TopHeader />
             <Toolbar />
             <Container>

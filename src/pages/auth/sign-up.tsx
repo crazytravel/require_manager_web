@@ -1,24 +1,31 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Card, Form, Input, Checkbox, message } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { useHistory, Link } from 'react-router-dom';
+import { Button, Card, Form, Input, message } from 'antd';
 import HttpStatus from 'http-status-codes';
 import Axios from 'common/network';
 import { useSession } from 'common/session-context';
 import { Session } from 'models/user';
-import SignContainer from './components/sign-container';
+import AuthLayout from 'layouts/auth';
 
 
-const SignInLayout: React.FC = props => {
+const SignUpLayout: React.FC = props => {
 
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
-    const { login } = useSession();
+    const { login, session } = useSession();
+    const history = useHistory();
+
+    useEffect(() => {
+        if (session.logged_in) {
+            history.push('/');
+        }
+    }, [history, session]);
 
     const onFinish = () => {
         setLoading(true);
         form.validateFields()
             .then(values => {
-                Axios.post("/api/auth/token", { ...values })
+                Axios.post("/api/auth/sign-up", { ...values })
                     .then(res => {
                         if (res.status === HttpStatus.OK) {
                             getUserInfo();
@@ -45,8 +52,8 @@ const SignInLayout: React.FC = props => {
     }
 
     return (
-        <SignContainer>
-            <Card title="登陆" bordered={false} headStyle={{ width: 350, textAlign: "center" }} >
+        <AuthLayout>
+            <Card title="注册" bordered={false} headStyle={{ width: 350, textAlign: "center" }} >
                 <Form
                     labelCol={{ span: 6 }}
                     wrapperCol={{ span: 18 }}
@@ -54,7 +61,11 @@ const SignInLayout: React.FC = props => {
                     name="login"
                     initialValues={{ remember: true }}
                     onFinish={onFinish}
-                >
+                >   
+                    <Form.Item name="nickname" label="昵称"
+                        rules={[{ required: true, message: '请输入昵称' }]}>
+                        <Input />
+                    </Form.Item>
                     <Form.Item name="username" label="用户名"
                         rules={[{ required: true, message: '请输入用户名' }]}>
                         <Input />
@@ -63,26 +74,38 @@ const SignInLayout: React.FC = props => {
                         rules={[{ required: true, message: '请输入密码' }]}>
                         <Input.Password />
                     </Form.Item>
-                    <Form.Item
-                        wrapperCol={{ offset: 6, span: 18 }}
-                        name="remember" valuePropName="checked">
-                        <Checkbox>记住我</Checkbox>
+                    <Form.Item name="confirm" label="确认密码"
+                        hasFeedback
+                        rules={[
+                            {
+                                required: true,
+                                message: '请再次输入您的密码',
+                            },
+                            ({ getFieldValue }) => ({
+                                validator(rule, value) {
+                                    if (!value || getFieldValue('password') === value) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject('两次输入密码不一致，请重新输入!');
+                                },
+                            }),
+                        ]}>
+                        <Input.Password />
                     </Form.Item>
 
                     <Form.Item wrapperCol={{ span: 24 }} style={{ textAlign: "center" }}>
                         <Button style={{ paddingLeft: 50, paddingRight: 50 }} type="primary" loading={loading} htmlType="submit">
-                            登陆
+                            注册
                                 </Button>
                     </Form.Item>
                     <Form.Item wrapperCol={{ span: 24 }} style={{ textAlign: "center" }}>
-                        <Link to='/sign-up'>新用户注册</Link>
+                        <Link to='/sign-in'>已有账号？立即登陆</Link>
                     </Form.Item>
                 </Form>
             </Card>
-        </SignContainer>
+        </AuthLayout>
     );
 }
 
 
-
-export default SignInLayout;
+export default SignUpLayout;

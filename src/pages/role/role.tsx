@@ -8,7 +8,7 @@ import Axios from 'common/network';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import HttpStatus from 'http-status-codes';
 
-import { StyledCondition } from '../../components/styled';
+import { StyledCondition } from 'components/styled';
 
 const { confirm } = Modal;
 

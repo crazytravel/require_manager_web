@@ -4,14 +4,14 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { LoadingOutlined } from '@ant-design/icons';
 import HttpStatus from 'http-status-codes';
 import Column from './components/column';
-import TopHeader from 'components/top-header';
 import Toolbar from 'components/toolbar';
 import { Project, Stage } from 'models/kanban';
 import axios from 'common/network';
 import { message } from 'antd';
+import KanbanLayout from 'layouts/kanban';
 
 
-const KanbanLayout: React.FC = props => {
+const KanbanPage: React.FC = props => {
     const [changeTimestamp, setChangeTimestamp] = useState<number>();
     const [projectId, setProjectId] = useState<string>();
     const [activeProject, setActiveProject] = useState<Project>();
@@ -80,8 +80,7 @@ const KanbanLayout: React.FC = props => {
         loadStages(projectId);
     }
     return (
-        <Layout style={{ height: '100%' }}>
-            <TopHeader />
+        <KanbanLayout>
             <Toolbar onFinish={loadTask} activeProjectId={activeProject?.id} />
             <DragDropContext onDragEnd={onDragEnd}>
                 <Container>
@@ -99,7 +98,7 @@ const KanbanLayout: React.FC = props => {
                 </Container>
             </DragDropContext>
             {loading ? <Loading /> : ''}
-        </Layout>
+        </KanbanLayout>
 
     )
 }
@@ -111,14 +110,6 @@ const Loading = () => {
         </LoadingContainer>
     )
 }
-
-const Layout = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-`;
 
 const Container = styled.div`
     padding: 20px;
@@ -147,4 +138,4 @@ const LoadingContainer = styled.div`
 
 
 
-export default KanbanLayout;
+export default KanbanPage;

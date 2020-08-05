@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Table, Input } from 'antd';
 import { useFetch } from 'common/fetch-hook';
-import Axios from 'common/network';
+// import Axios from 'common/network';
 const { Search } = Input;
 
 interface AssignUserProps {

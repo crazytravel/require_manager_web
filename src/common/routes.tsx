@@ -8,12 +8,12 @@ import {
     AuthorityPage,
     ErrorPage,
     StagePage,
-} from 'layouts/main/export';
+    KanbanPage,
+    SignInPage,
+    SignUpPage,
+} from 'pages/export';
 import ProtectedRoute from './protected-route';
-import MainLayout from 'layouts/main/main';
-import KanbanLayout from 'layouts/kanban/kanban';
-import SignInLayout from 'layouts/sign/sign-in';
-import SignUpLayout from 'layouts/sign/sign-up';
+import MainLayout from 'layouts/main';
 // import { useSession } from './session-context';
 
 interface RouteObj {
@@ -25,15 +25,15 @@ interface RouteObj {
 export const Routes = {
     signIn: {
         path: '/sign-in',
-        component: SignInLayout,
+        component: SignInPage,
     },
     signUp: {
         path: '/sign-up',
-        component: SignUpLayout,
+        component: SignUpPage,
     },
     kanban: {
         path: '/kanban',
-        component: KanbanLayout,
+        component: KanbanPage,
     },
     main: {
         path: '/main',
