@@ -4,53 +4,57 @@ import Axios from 'common/network';
 import { Stage } from 'models/kanban';
 import HttpStatus from 'http-status-codes';
 
-
 interface StageFormProps {
-    visible: boolean,
-    onSave: (values: any) => void,
-    onCancel: () => void,
-    projectId: string | null,
-    data?: Stage,
+    visible: boolean;
+    onSave: (values: any) => void;
+    onCancel: () => void;
+    projectId: string | null;
+    data?: Stage;
 }
 
-const StageForm: React.FC<StageFormProps> = props => {
+const StageForm: React.FC<StageFormProps> = (props) => {
     const [form] = Form.useForm();
 
     useEffect(() => {
         form.setFieldsValue({ ...props.data });
-    }, [form, props.data])
+    }, [form, props.data]);
 
     const saveData = (values: any) => {
         if (props.data?.id) {
             Axios.patch('/api/v1/stages/' + props.data?.id, { ...values })
-                .then(res => {
+                .then((res) => {
                     if (res.status === HttpStatus.OK) {
                         props.onSave(res.data);
                     }
-                }).catch(err => {
-                    message.error("修改失败! : ", err.message);
+                })
+                .catch((err) => {
+                    message.error('修改失败! : ', err.message);
                 });
         } else {
-            Axios.post("/api/v1/stages", { ...values, projectId: props.projectId })
-                .then(res => {
+            Axios.post('/api/v1/stages', {
+                ...values,
+                projectId: props.projectId,
+            })
+                .then((res) => {
                     if (res.status === HttpStatus.CREATED) {
                         props.onSave(res.data);
                     }
-                }).catch(err => {
-                    message.error("创建失败! : ", err.message);
+                })
+                .catch((err) => {
+                    message.error('创建失败! : ', err.message);
                 });
         }
-    }
+    };
 
     const okHandler = () => {
         form.validateFields()
-            .then(values => {
+            .then((values) => {
                 saveData(values);
             })
-            .catch(err => {
+            .catch((err) => {
                 message.error(err);
             });
-    }
+    };
 
     return (
         <Modal
@@ -68,13 +72,16 @@ const StageForm: React.FC<StageFormProps> = props => {
                 form={form}
                 name="form_in_modal"
             >
-                <Form.Item name="name" label="阶段名称"
-                    rules={[{ required: true, message: '请输入阶段名称' }]}>
+                <Form.Item
+                    name="name"
+                    label="阶段名称"
+                    rules={[{ required: true, message: '请输入阶段名称' }]}
+                >
                     <Input />
                 </Form.Item>
             </Form>
-        </Modal >
-    )
-}
+        </Modal>
+    );
+};
 
 export default StageForm;

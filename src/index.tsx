@@ -6,17 +6,16 @@ import SessionContextProvider from 'common/session-context';
 import './index.less';
 // import * as serviceWorker from './serviceWorker';
 
-
 const App: React.FC = () => {
     const baseURL = process.env.PUBLIC_URL;
     return (
-      <SessionContextProvider>
-        <BrowserRouter basename={baseURL} >
-          <RootRoutes />
-        </BrowserRouter>
-      </SessionContextProvider>
+        <SessionContextProvider>
+            <BrowserRouter basename={baseURL}>
+                <RootRoutes />
+            </BrowserRouter>
+        </SessionContextProvider>
     );
-  }
+};
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

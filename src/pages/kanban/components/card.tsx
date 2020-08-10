@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { Button, Modal, message, Input, Menu, Dropdown } from 'antd';
-import { EditOutlined, ExclamationCircleOutlined, UserOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Draggable, DraggableStateSnapshot, DraggableProvided } from "react-beautiful-dnd";
+import {
+    EditOutlined,
+    ExclamationCircleOutlined,
+    UserOutlined,
+    DeleteOutlined,
+} from '@ant-design/icons';
+import {
+    Draggable,
+    DraggableStateSnapshot,
+    DraggableProvided,
+} from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import HttpStatus from 'http-status-codes';
 import { Task } from 'models/kanban';
@@ -11,19 +20,18 @@ import AssignUser from './assign-user';
 const { TextArea } = Input;
 const { confirm } = Modal;
 
-
 export interface DragItem {
-    type: 'card' | 'box',
-    task: Task,
-    cardHeight: number | undefined,
+    type: 'card' | 'box';
+    task: Task;
+    cardHeight: number | undefined;
 }
 
 interface CardProps {
-    id: string,
-    index: number,
-    content: string,
-    projectId: string,
-    onOperatorSuccess: () => void,
+    id: string;
+    index: number;
+    content: string;
+    projectId: string;
+    onOperatorSuccess: () => void;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -33,7 +41,6 @@ const Card: React.FC<CardProps> = ({
     projectId,
     onOperatorSuccess,
 }) => {
-
     const [showEdit, setShowEdit] = useState<boolean>(false);
     const [showForm, setShowForm] = useState<boolean>(false);
     const [showAssignUser, setShowAssignUser] = useState<boolean>(false);
@@ -43,38 +50,40 @@ const Card: React.FC<CardProps> = ({
     const handleEditAction = () => {
         setShowForm(!showForm);
         setReadonlyContent('');
-    }
+    };
 
     const handleOnSave = () => {
         setShowForm(false);
 
-        axios.patch('/api/v1/tasks/' + id, { content: editContent })
-            .then(res => {
+        axios
+            .patch('/api/v1/tasks/' + id, { content: editContent })
+            .then((res) => {
                 if (res.status === HttpStatus.OK) {
                     setReadonlyContent(editContent);
                     message.success('操作成功!');
                 }
-            }).catch(err => {
+            })
+            .catch((err) => {
                 setReadonlyContent(content);
                 message.error('操作失败', err);
             });
-    }
+    };
 
     const handleOnCancel = () => {
         setReadonlyContent(content);
         setShowForm(false);
-    }
+    };
 
     const handleEnter = () => {
         if (showForm) {
             return;
         }
         setShowEdit(true);
-    }
+    };
 
     const handleLeave = () => {
         setShowEdit(false);
-    }
+    };
 
     const handleOnDelete = () => {
         confirm({
@@ -84,92 +93,149 @@ const Card: React.FC<CardProps> = ({
             okType: 'primary',
             cancelText: '取消',
             onOk() {
-                axios.delete('/api/v1/tasks/' + id)
-                    .then(res => {
+                axios
+                    .delete('/api/v1/tasks/' + id)
+                    .then((res) => {
                         if (res.status === HttpStatus.NO_CONTENT) {
                             message.success('操作成功!');
-                            // refresh 
+                            // refresh
                             onOperatorSuccess();
                         }
-                    }).catch(err => {
-                        message.error('操作失败!', err.message);
-                    }).finally(() => {
-                        setShowForm(false);
                     })
+                    .catch((err) => {
+                        message.error('操作失败!', err.message);
+                    })
+                    .finally(() => {
+                        setShowForm(false);
+                    });
             },
-        })
-    }
+        });
+    };
 
     const handleAssignUser = () => {
         setShowAssignUser(true);
-
-    }
+    };
 
     const menu = (
         <Menu>
-            <Menu.Item icon={<UserOutlined />} onClick={handleAssignUser} >分配人员</Menu.Item>
-            <Menu.Item icon={<EditOutlined />} onClick={handleEditAction} >编辑</Menu.Item>
-            <Menu.Item icon={<DeleteOutlined />} onClick={handleOnDelete} danger>删除</Menu.Item>
+            <Menu.Item icon={<UserOutlined />} onClick={handleAssignUser}>
+                分配人员
+            </Menu.Item>
+            <Menu.Item icon={<EditOutlined />} onClick={handleEditAction}>
+                编辑
+            </Menu.Item>
+            <Menu.Item
+                icon={<DeleteOutlined />}
+                onClick={handleOnDelete}
+                danger
+            >
+                删除
+            </Menu.Item>
         </Menu>
     );
     return (
         <>
             <Draggable draggableId={id} index={index}>
-                {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
-                    <Wrapper ref={provided.innerRef}
+                {(
+                    provided: DraggableProvided,
+                    snapshot: DraggableStateSnapshot,
+                ) => (
+                    <Wrapper
+                        ref={provided.innerRef}
                         isDragging={snapshot.isDragging}
                         {...provided.draggableProps}
-                        {...provided.dragHandleProps}>
+                        {...provided.dragHandleProps}
+                    >
                         <Content>{readonlyContent}</Content>
-                        <Overlay onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
-                            {showEdit ? <ButtonWrapper>
-                                <Dropdown overlay={menu} >
-                                    <Button style={{ color: 'rgba(0, 0, 0, 0.65)' }} type="link" onClick={handleEditAction}><EditOutlined /></Button>
-                                </Dropdown>
-                            </ButtonWrapper>
-                                : ''}
+                        <Overlay
+                            onMouseEnter={handleEnter}
+                            onMouseLeave={handleLeave}
+                        >
+                            {showEdit ? (
+                                <ButtonWrapper>
+                                    <Dropdown overlay={menu}>
+                                        <Button
+                                            style={{
+                                                color: 'rgba(0, 0, 0, 0.65)',
+                                            }}
+                                            type="link"
+                                            onClick={handleEditAction}
+                                        >
+                                            <EditOutlined />
+                                        </Button>
+                                    </Dropdown>
+                                </ButtonWrapper>
+                            ) : (
+                                ''
+                            )}
                         </Overlay>
                         <Bottom>
-                            {showForm ? <TextArea autoFocus={true} autoSize={{ minRows: 2 }} onInput={(e) => setEditContent(e.currentTarget.value)} value={editContent} />
-                                : ''}
+                            {showForm ? (
+                                <TextArea
+                                    autoFocus={true}
+                                    autoSize={{ minRows: 2 }}
+                                    onInput={(e) =>
+                                        setEditContent(e.currentTarget.value)
+                                    }
+                                    value={editContent}
+                                />
+                            ) : (
+                                ''
+                            )}
                         </Bottom>
-                        {showForm ?
+                        {showForm ? (
                             <FormButtonWrapper>
                                 <EditButtonWrapper>
-                                    <Button type="default" onClick={handleOnCancel} >取消</Button>
-                                    <Button type="primary" onClick={handleOnSave} style={{ marginLeft: 5 }}>保存</Button>
+                                    <Button
+                                        type="default"
+                                        onClick={handleOnCancel}
+                                    >
+                                        取消
+                                    </Button>
+                                    <Button
+                                        type="primary"
+                                        onClick={handleOnSave}
+                                        style={{ marginLeft: 5 }}
+                                    >
+                                        保存
+                                    </Button>
                                 </EditButtonWrapper>
-                            </FormButtonWrapper> : ''
-                        }
+                            </FormButtonWrapper>
+                        ) : (
+                            ''
+                        )}
                     </Wrapper>
                 )}
             </Draggable>
-            <AssignUser visible={showAssignUser} projectId={projectId} 
-            onCancel={() => setShowAssignUser(false)} 
-            onOk={() => setShowAssignUser(false)} />
+            <AssignUser
+                visible={showAssignUser}
+                projectId={projectId}
+                onCancel={() => setShowAssignUser(false)}
+                onOk={() => setShowAssignUser(false)}
+            />
         </>
-    )
-}
+    );
+};
 
 const defaultBackgroundColor = '#ebecf0';
 interface WrapperProps {
-    isDragging: boolean
+    isDragging: boolean;
 }
 
 const Wrapper = styled.div<WrapperProps>`
     position: relative;
     overflow: hidden;
-    box-shadow: 0 1px 0 rgba(9,30,66,.25);
+    box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
     margin-bottom: 10px;
-    background-color: ${props => props.isDragging ? '#AED581' : '#fff'};
+    background-color: ${(props) => (props.isDragging ? '#AED581' : '#fff')};
     padding: 10px;
     border-radius: 2px;
 `;
 
 const Content = styled.span`
     white-space: normal;
-    word-wrap:break-word;
-    word-break:break-all; 
+    word-wrap: break-word;
+    word-break: break-all;
 `;
 
 const Overlay = styled.div`

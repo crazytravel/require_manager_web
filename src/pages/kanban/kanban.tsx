@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { LoadingOutlined } from '@ant-design/icons';
 import HttpStatus from 'http-status-codes';
 import Column from './components/column';
@@ -10,8 +10,7 @@ import axios from 'common/network';
 import { message } from 'antd';
 import KanbanLayout from 'layouts/kanban';
 
-
-const KanbanPage: React.FC = props => {
+const KanbanPage: React.FC = (props) => {
     const [changeTimestamp, setChangeTimestamp] = useState<number>();
     const [projectId, setProjectId] = useState<string>();
     const [activeProject, setActiveProject] = useState<Project>();
@@ -19,32 +18,36 @@ const KanbanPage: React.FC = props => {
     const [loading, setLoading] = useState<Boolean>(false);
 
     useEffect(() => {
-        axios.get('/api/v1/projects/active')
-            .then(res => {
+        axios
+            .get('/api/v1/projects/active')
+            .then((res) => {
                 if (res.status === HttpStatus.OK) {
                     setActiveProject(res.data);
                     if (res.data) {
-                        console.log(res.data)
+                        console.log(res.data);
                         setProjectId(res.data.id);
                         loadStages(res.data.id);
                     }
                 }
-            }).catch(err => {
-                console.log(err)
+            })
+            .catch((err) => {
+                console.log(err);
             });
     }, []);
 
     const loadStages = (projectId: string) => {
         console.log(projectId);
-        axios.get(`/api/v1/projects/${projectId}/stages`)
-            .then(res => {
+        axios
+            .get(`/api/v1/projects/${projectId}/stages`)
+            .then((res) => {
                 if (res.status === HttpStatus.OK) {
                     setStages(res.data);
                 }
-            }).catch(err => {
+            })
+            .catch((err) => {
                 message.error(err);
             });
-    }
+    };
 
     const onDragEnd = (result: DropResult) => {
         const { source, destination, draggableId } = result;
@@ -52,33 +55,39 @@ const KanbanPage: React.FC = props => {
             return;
         }
         // droppableId is stageId
-        if (destination.droppableId === source.droppableId &&
-            destination.index === source.index) {
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) {
             return;
         }
 
         setLoading(true);
-        axios.put(`/api/v1/tasks/${draggableId}/reorder`, {
-            sourceStageId: source.droppableId,
-            destinationStageId: destination.droppableId,
-            sourceIndex: source.index,
-            destinationIndex: destination.index,
-        }).then(res => {
-            if (res.status === HttpStatus.OK) {
-                // refresh task list
-                const timestamp = new Date().getTime();
-                setChangeTimestamp(timestamp);
-            }
-        }).catch(err => {
-            message.error(err);
-        }).finally(() => setLoading(false));
-    }
+        axios
+            .put(`/api/v1/tasks/${draggableId}/reorder`, {
+                sourceStageId: source.droppableId,
+                destinationStageId: destination.droppableId,
+                sourceIndex: source.index,
+                destinationIndex: destination.index,
+            })
+            .then((res) => {
+                if (res.status === HttpStatus.OK) {
+                    // refresh task list
+                    const timestamp = new Date().getTime();
+                    setChangeTimestamp(timestamp);
+                }
+            })
+            .catch((err) => {
+                message.error(err);
+            })
+            .finally(() => setLoading(false));
+    };
 
     const loadTask = (projectId: string) => {
         console.log('项目ID:', projectId);
         setProjectId(projectId);
         loadStages(projectId);
-    }
+    };
     return (
         <KanbanLayout>
             <Toolbar onFinish={loadTask} activeProjectId={activeProject?.id} />
@@ -87,29 +96,31 @@ const KanbanPage: React.FC = props => {
                     <Content>
                         {stages?.map((stage: Stage) => {
                             // const currentTasks = stage.taskIds.map(taskId => tasks[taskId]);
-                            return <Column
-                                changeTimestamp={changeTimestamp}
-                                key={stage.id}
-                                stageId={stage.id}
-                                projectId={projectId}
-                                title={stage.name} />
+                            return (
+                                <Column
+                                    changeTimestamp={changeTimestamp}
+                                    key={stage.id}
+                                    stageId={stage.id}
+                                    projectId={projectId}
+                                    title={stage.name}
+                                />
+                            );
                         })}
                     </Content>
                 </Container>
             </DragDropContext>
             {loading ? <Loading /> : ''}
         </KanbanLayout>
-
-    )
-}
+    );
+};
 
 const Loading = () => {
     return (
         <LoadingContainer>
             <LoadingOutlined />
         </LoadingContainer>
-    )
-}
+    );
+};
 
 const Container = styled.div`
     padding: 20px;
@@ -132,10 +143,8 @@ const LoadingContainer = styled.div`
     height: 100%;
     position: absolute;
     font-size: 3rem;
-    background-color: rgba(0, 0, 0, .2);
+    background-color: rgba(0, 0, 0, 0.2);
     z-index: 10;
 `;
-
-
 
 export default KanbanPage;

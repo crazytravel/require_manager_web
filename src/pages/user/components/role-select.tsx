@@ -11,50 +11,51 @@ interface RoleSelectProps {
     onCancel: () => void;
 }
 
-const RoleSelect: React.FC<RoleSelectProps> = props => {
-
-    const [selectedIds, setSelectedIds] = useState<React.ReactText[]>()
-    const [loading, setLoading] = useState(false)
-    const [fetchedData, setFetchedData] = useState()
+const RoleSelect: React.FC<RoleSelectProps> = (props) => {
+    const [selectedIds, setSelectedIds] = useState<React.ReactText[]>();
+    const [loading, setLoading] = useState(false);
+    const [fetchedData, setFetchedData] = useState();
 
     useEffect(() => {
         if (props.userId) {
             setLoading(true);
             Axios.get('/api/v1/roles/')
-                .then(res => {
+                .then((res) => {
                     if (res.status === HttpStatus.OK) {
                         setFetchedData(res.data);
                     }
                 })
-                .catch(err => message.error('load error:' + err.message))
+                .catch((err) => message.error('load error:' + err.message))
                 .then(() => {
                     setLoading(false);
                 });
             Axios.get('/api/v1/userAndRoles/' + props.userId + '/assign')
-                .then(res => {
+                .then((res) => {
                     if (res.status === HttpStatus.OK) {
-                        const selectedIds: number[] = []
+                        const selectedIds: number[] = [];
                         res.data?.forEach((userRole: UserRole) => {
                             selectedIds.push(userRole.role_id);
                         });
                         setSelectedIds(selectedIds);
                     }
                 })
-                .catch(err => message.error('load error:' + err.message))
+                .catch((err) => message.error('load error:' + err.message));
         }
-
-    }, [props.userId])
+    }, [props.userId]);
 
     const okHandler = () => {
-        Axios.put('/api/v1/userAndRoles/' + props.userId + '/assign', { roleIds: selectedIds })
-            .then(res => {
+        Axios.put('/api/v1/userAndRoles/' + props.userId + '/assign', {
+            roleIds: selectedIds,
+        })
+            .then((res) => {
                 if (res.status === HttpStatus.CREATED) {
                     props.onSave();
                 }
-            }).catch(err => {
-                message.error("save data failed, reason:" + err.message);
             })
-    }
+            .catch((err) => {
+                message.error('save data failed, reason:' + err.message);
+            });
+    };
     return (
         <Modal
             visible={props.visible}
@@ -68,22 +69,31 @@ const RoleSelect: React.FC<RoleSelectProps> = props => {
         >
             <Table
                 columns={[
-                    { title: '#', key: 'number', render: (text, record, index) => index + 1 },
+                    {
+                        title: '#',
+                        key: 'number',
+                        render: (text, record, index) => index + 1,
+                    },
                     { title: 'name', key: 'name', dataIndex: 'name' },
-                    { title: 'description', key: 'description', dataIndex: 'description' },
+                    {
+                        title: 'description',
+                        key: 'description',
+                        dataIndex: 'description',
+                    },
                 ]}
                 rowSelection={{
                     type: 'checkbox',
-                    onChange: (selectedRowKeys, selectedRows) => setSelectedIds(selectedRowKeys),
+                    onChange: (selectedRowKeys, selectedRows) =>
+                        setSelectedIds(selectedRowKeys),
                     selectedRowKeys: selectedIds,
                 }}
-                rowKey={record => record.id}
+                rowKey={(record) => record.id}
                 dataSource={fetchedData}
                 pagination={false}
                 loading={loading}
             />
         </Modal>
     );
-}
+};
 
 export default RoleSelect;

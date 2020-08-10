@@ -13,7 +13,8 @@ export interface Session {
 }
 
 
-export interface InternalUser {
+export interface User {
+    id: string;
     nickname?: string;
     username: string;
     roles: string[];
