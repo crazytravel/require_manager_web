@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Table, Input, message } from 'antd';
 import HttpStatus from 'http-status-codes';
-import { useFetch } from 'common/fetch-hook';
 import Axios from 'common/network';
-import { User } from 'models/user';
+import { ProjectUser } from 'models/project';
 const { Search } = Input;
 
 interface AssignUserProps {
@@ -29,14 +28,23 @@ const AssignUser: React.FC<AssignUserProps> = (props) => {
             .then(() => setLoading(false));
         Axios.get(`/api/v1/projects/${props.projectId}/users`).then((res) => {
             if (res.status === HttpStatus.OK) {
-                const selectedIds = res.data?.map((user: User) => user.id);
+                const selectedIds = res.data.map(
+                    (projectUser: ProjectUser) => projectUser.userId,
+                );
                 setSelectedIds(selectedIds);
             }
         });
     }, [props.projectId]);
     const onOk = () => {
-        props.onOk();
-        // Axios.post()
+        Axios.post(`/api/v1/projects/${props.projectId}/users`, {
+            userIds: selectedIds,
+        })
+            .then((res) => {
+                if (res.status === HttpStatus.CREATED) {
+                    props.onOk();
+                }
+            })
+            .catch((err) => message.error('保存失败'));
     };
     return (
         <Modal
