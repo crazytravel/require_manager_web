@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Table, Input, message } from 'antd';
 import HttpStatus from 'http-status-codes';
 import Axios from 'common/network';
-import { ProjectUser } from 'models/project';
+import { User } from 'models/user';
 const { Search } = Input;
 
 interface AssignUserProps {
@@ -15,7 +15,6 @@ const AssignUser: React.FC<AssignUserProps> = (props) => {
     const [selectedIds, setSelectedIds] = useState<React.ReactText[]>();
     const [userData, setUserData] = useState();
     const [loading, setLoading] = useState(false);
-
     useEffect(() => {
         setLoading(true);
         Axios.get('/api/v1/users')
@@ -28,9 +27,7 @@ const AssignUser: React.FC<AssignUserProps> = (props) => {
             .then(() => setLoading(false));
         Axios.get(`/api/v1/projects/${props.projectId}/users`).then((res) => {
             if (res.status === HttpStatus.OK) {
-                const selectedIds = res.data.map(
-                    (projectUser: ProjectUser) => projectUser.userId,
-                );
+                const selectedIds = res.data.map((user: User) => user.id);
                 setSelectedIds(selectedIds);
             }
         });

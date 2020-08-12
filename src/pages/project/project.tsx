@@ -19,9 +19,10 @@ const ProjectPage: React.FC = () => {
     const [projectId, setProjectId] = useState<string>();
     const [showAssignUser, setShowAssignUser] = useState<boolean>(false);
     const [changeTimestamp, setChangeTimestamp] = useState<number>();
-    const { loading, fetchedData } = useFetch<Project[]>('/api/v1/projects', [
-        changeTimestamp,
-    ]);
+    const { loading, fetchedData } = useFetch<Project[]>(
+        '/api/v1/projects/own',
+        [changeTimestamp],
+    );
 
     const saveHandler = (values: Project) => {
         setFormVisible(false);

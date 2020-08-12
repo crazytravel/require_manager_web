@@ -13,6 +13,7 @@ export interface Task {
     stageId?: string,
     projectId?: string,
     nextId?: string,
+    userId?: string,
 }
 
 export interface Stage {

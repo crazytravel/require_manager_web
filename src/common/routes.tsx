@@ -12,15 +12,16 @@ import {
     SignInPage,
     SignUpPage,
     SettingsPage,
+    UserForm,
 } from 'pages/export';
 import ProtectedRoute from './protected-route';
 import MainLayout from 'layouts/main';
 // import { useSession } from './session-context';
 
 interface RouteObj {
-    path: string,
-    component: React.FC,
-    routes?: Record<string, RouteObj>,
+    path: string;
+    component: React.FC;
+    routes?: Record<string, RouteObj>;
 }
 
 export const Routes = {
@@ -54,7 +55,7 @@ export const Routes = {
             },
             user: {
                 path: '/main/user',
-                component: UserPage,
+                component: UserForm,
             },
             role: {
                 path: '/main/role',
@@ -67,42 +68,67 @@ export const Routes = {
             settings: {
                 path: '/main/settings',
                 component: SettingsPage,
-            }
-        }
-    }
-}
+            },
+        },
+    },
+};
 
 export const RootRoutes: React.FC = () => {
     return (
         <Switch>
-            <ProtectedRoute path="/" exact><Redirect to={Routes.kanban.path} /></ProtectedRoute>
-            <ProtectedRoute path={Routes.kanban.path} component={Routes.kanban.component} />
-            <ProtectedRoute path={Routes.main.path} component={Routes.main.component} />
-            <Route path={Routes.signIn.path} component={Routes.signIn.component} />
-            <Route path={Routes.signUp.path} component={Routes.signUp.component} />
-            <Route><ErrorPage code={404} message="页面不存在" /></Route>
+            <ProtectedRoute path="/" exact>
+                <Redirect to={Routes.kanban.path} />
+            </ProtectedRoute>
+            <ProtectedRoute
+                path={Routes.kanban.path}
+                component={Routes.kanban.component}
+            />
+            <ProtectedRoute
+                path={Routes.main.path}
+                component={Routes.main.component}
+            />
+            <Route
+                path={Routes.signIn.path}
+                component={Routes.signIn.component}
+            />
+            <Route
+                path={Routes.signUp.path}
+                component={Routes.signUp.component}
+            />
+            <Route>
+                <ErrorPage code={404} message="页面不存在" />
+            </Route>
         </Switch>
-    )
-}
+    );
+};
 
 export const MainRoutes: React.FC = () => {
-
     // const { session } = useSession();
     // const authorities = session.authorities;
     const mapRoutes = () => {
         const routes = [];
-        const routeRecord = Routes.main.routes as Record<string, RouteObj>
+        const routeRecord = Routes.main.routes as Record<string, RouteObj>;
         for (const item in routeRecord) {
             const route = routeRecord[item];
-            routes.push(<Route key={item} path={route.path} component={route.component} />)
+            routes.push(
+                <Route
+                    key={item}
+                    path={route.path}
+                    component={route.component}
+                />,
+            );
         }
         return routes;
-    }
+    };
     return (
         <Switch>
-            <Route path={Routes.main.path} exact><Redirect to={Routes.main.routes.welcome.path} /></Route>
+            <Route path={Routes.main.path} exact>
+                <Redirect to={Routes.main.routes.welcome.path} />
+            </Route>
             {mapRoutes()}
-            <Route><ErrorPage code={404} message="Page not found" /></Route>
+            <Route>
+                <ErrorPage code={404} message="Page not found" />
+            </Route>
         </Switch>
-    )
-}
+    );
+};

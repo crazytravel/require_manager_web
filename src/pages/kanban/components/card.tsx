@@ -16,6 +16,7 @@ import HttpStatus from 'http-status-codes';
 import { Task } from 'models/kanban';
 import axios from 'common/network';
 import AssignUser from './assign-user';
+import Avatar from './avatar';
 
 const { TextArea } = Input;
 const { confirm } = Modal;
@@ -27,25 +28,18 @@ export interface DragItem {
 }
 
 interface CardProps {
-    id: string;
     index: number;
-    content: string;
-    projectId: string;
+    task: Task;
     onOperatorSuccess: () => void;
 }
 
-const Card: React.FC<CardProps> = ({
-    id,
-    index,
-    content,
-    projectId,
-    onOperatorSuccess,
-}) => {
-    const [showEdit, setShowEdit] = useState<boolean>(false);
+const Card: React.FC<CardProps> = ({ index, task, onOperatorSuccess }) => {
     const [showForm, setShowForm] = useState<boolean>(false);
     const [showAssignUser, setShowAssignUser] = useState<boolean>(false);
-    const [readonlyContent, setReadonlyContent] = useState<string>(content);
-    const [editContent, setEditContent] = useState<string>(content);
+    const [readonlyContent, setReadonlyContent] = useState<string>(
+        task.content,
+    );
+    const [editContent, setEditContent] = useState<string>(task.content);
 
     const handleEditAction = () => {
         setShowForm(!showForm);
@@ -56,7 +50,7 @@ const Card: React.FC<CardProps> = ({
         setShowForm(false);
 
         axios
-            .patch('/api/v1/tasks/' + id, { content: editContent })
+            .patch('/api/v1/tasks/' + task.id, { content: editContent })
             .then((res) => {
                 if (res.status === HttpStatus.OK) {
                     setReadonlyContent(editContent);
@@ -64,25 +58,14 @@ const Card: React.FC<CardProps> = ({
                 }
             })
             .catch((err) => {
-                setReadonlyContent(content);
+                setReadonlyContent(task.content);
                 message.error('操作失败', err);
             });
     };
 
     const handleOnCancel = () => {
-        setReadonlyContent(content);
+        setReadonlyContent(task.content);
         setShowForm(false);
-    };
-
-    const handleEnter = () => {
-        if (showForm) {
-            return;
-        }
-        setShowEdit(true);
-    };
-
-    const handleLeave = () => {
-        setShowEdit(false);
     };
 
     const handleOnDelete = () => {
@@ -94,7 +77,7 @@ const Card: React.FC<CardProps> = ({
             cancelText: '取消',
             onOk() {
                 axios
-                    .delete('/api/v1/tasks/' + id)
+                    .delete('/api/v1/tasks/' + task.id)
                     .then((res) => {
                         if (res.status === HttpStatus.NO_CONTENT) {
                             message.success('操作成功!');
@@ -135,7 +118,7 @@ const Card: React.FC<CardProps> = ({
     );
     return (
         <>
-            <Draggable draggableId={id} index={index}>
+            <Draggable draggableId={task.id} index={index}>
                 {(
                     provided: DraggableProvided,
                     snapshot: DraggableStateSnapshot,
@@ -146,29 +129,27 @@ const Card: React.FC<CardProps> = ({
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                     >
-                        <Content>{readonlyContent}</Content>
-                        <Overlay
-                            onMouseEnter={handleEnter}
-                            onMouseLeave={handleLeave}
-                        >
-                            {showEdit ? (
-                                <ButtonWrapper>
-                                    <Dropdown overlay={menu}>
-                                        <Button
-                                            style={{
-                                                color: 'rgba(0, 0, 0, 0.65)',
-                                            }}
-                                            type="link"
-                                            onClick={handleEditAction}
-                                        >
+                        <Title>
+                            <IndexNumber>
+                                {task.projectId + '-' + task.id}
+                            </IndexNumber>
+                            <AvatarWrapper>
+                                {task.userId ? (
+                                    <Avatar userId={task.userId}></Avatar>
+                                ) : (
+                                    ''
+                                )}
+                                <Overlay>
+                                    <ButtonWrapper>
+                                        <Dropdown overlay={menu}>
                                             <EditOutlined />
-                                        </Button>
-                                    </Dropdown>
-                                </ButtonWrapper>
-                            ) : (
-                                ''
-                            )}
-                        </Overlay>
+                                        </Dropdown>
+                                    </ButtonWrapper>
+                                </Overlay>
+                            </AvatarWrapper>
+                        </Title>
+                        <Content>{readonlyContent}</Content>
+
                         <Bottom>
                             {showForm ? (
                                 <TextArea
@@ -209,7 +190,9 @@ const Card: React.FC<CardProps> = ({
             </Draggable>
             <AssignUser
                 visible={showAssignUser}
-                projectId={projectId}
+                projectId={task.projectId || ''}
+                userId={task.userId || ''}
+                taskId={task.id}
                 onCancel={() => setShowAssignUser(false)}
                 onOk={() => setShowAssignUser(false)}
             />
@@ -232,18 +215,13 @@ const Wrapper = styled.div<WrapperProps>`
     border-radius: 2px;
 `;
 
-const Content = styled.span`
+const Content = styled.div`
     white-space: normal;
     word-wrap: break-word;
     word-break: break-all;
 `;
 
 const Overlay = styled.div`
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: flex-end;
     align-items: flex-start;
@@ -251,14 +229,13 @@ const Overlay = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-    background-color: #ebecf0;
-    color: #000;
-    width: 30px;
-    height: 30px;
+    /* background-color: #ebecf0; */
+    color: rgba(0, 0, 0, 0.65);
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     border-radius: 2px;
+    margin-left: 8px;
 `;
 
 const Bottom = styled.div`
@@ -278,4 +255,19 @@ const EditButtonWrapper = styled.div`
     flex-direction: row;
     justify-content: flex-end;
 `;
+
+const Title = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 5px;
+`;
+const AvatarWrapper = styled.div`
+    display: flex;
+    align-items: center;
+`;
+const IndexNumber = styled.span`
+    color: rgba(0, 0, 0, 0.3);
+`;
+
 export default Card;

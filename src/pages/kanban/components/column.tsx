@@ -71,13 +71,11 @@ const Column: React.FC<ColumnProps> = ({
                     >
                         {fetchedData?.map((task: Task, index: number) => (
                             <Card
-                                projectId={projectId || ''}
                                 onOperatorSuccess={() => {
                                     const timestamp = new Date().getTime();
                                     setChangeTime(timestamp);
                                 }}
-                                id={task.id}
-                                content={task.content}
+                                task={task}
                                 index={index}
                                 key={task.id}
                             />

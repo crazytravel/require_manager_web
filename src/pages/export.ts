@@ -1,5 +1,6 @@
 import WelcomePage from './welcome/welcome';
 import UserPage from './user/user';
+import UserForm from './user/user-form';
 import VersionPage from './version/version';
 import ProjectPage from './project/project';
 import StagePage from './stage/stage';
@@ -24,4 +25,5 @@ export {
     SignInPage,
     SignUpPage,
     SettingsPage,
+    UserForm,
 }
