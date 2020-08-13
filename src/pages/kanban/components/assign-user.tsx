@@ -38,7 +38,6 @@ const AssignUser: React.FC<AssignUserProps> = (props) => {
         })
             .then((res) => {
                 if (res.status === HttpStatus.OK) {
-                    message.success('操作成功');
                     props.onOk();
                 }
             })

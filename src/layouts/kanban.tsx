@@ -2,17 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import TopHeader from 'components/top-header';
 
-
-const KanbanLayout: React.FC = props => {
+const KanbanLayout: React.FC = (props) => {
     return (
         <Layout style={{ height: '100%' }}>
             <TopHeader />
             <Content>{props.children}</Content>
         </Layout>
-
-    )
-}
-
+    );
+};
 
 const Layout = styled.div`
     width: 100%;

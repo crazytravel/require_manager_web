@@ -31,6 +31,11 @@ const ProjectPage: React.FC = () => {
         message.success('创建成功！');
     };
 
+    const assignHandler = () => {
+        setShowAssignUser(false);
+        message.success('操作成功！');
+    };
+
     const handleActiveAction = (id: string) => {
         axios
             .patch(`/api/v1/projects/${id}/active`)
@@ -189,7 +194,7 @@ const ProjectPage: React.FC = () => {
                 visible={showAssignUser}
                 projectId={projectId}
                 onCancel={() => setShowAssignUser(false)}
-                onOk={() => setShowAssignUser(false)}
+                onOk={assignHandler}
             />
         </div>
     );

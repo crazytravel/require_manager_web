@@ -7,7 +7,6 @@ import MainMenu from 'components/main-menu';
 import { generateMenu } from 'common/menu-config';
 import { MainRoutes } from 'common/routes';
 
-
 const MainLayout: React.FC = () => {
     return (
         <Layout>
@@ -22,11 +21,10 @@ const MainLayout: React.FC = () => {
                         <MainRoutes />
                     </Content>
                 </Wrapper>
-
             </Container>
         </Layout>
     );
-}
+};
 
 const Layout = styled.div`
     width: 100%;

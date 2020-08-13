@@ -15,7 +15,7 @@ const KanbanPage: React.FC = (props) => {
     const [projectId, setProjectId] = useState<string>();
     const [activeProject, setActiveProject] = useState<Project>();
     const [stages, setStages] = useState<Stage[]>();
-    const [loading, setLoading] = useState<Boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         axios

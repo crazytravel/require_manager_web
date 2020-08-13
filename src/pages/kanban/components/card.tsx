@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { Button, Modal, message, Input, Menu, Dropdown } from 'antd';
 import {
@@ -80,9 +81,9 @@ const Card: React.FC<CardProps> = ({ index, task, onOperatorSuccess }) => {
                     .delete('/api/v1/tasks/' + task.id)
                     .then((res) => {
                         if (res.status === HttpStatus.NO_CONTENT) {
+                            onOperatorSuccess();
                             message.success('操作成功!');
                             // refresh
-                            onOperatorSuccess();
                         }
                     })
                     .catch((err) => {
@@ -96,12 +97,17 @@ const Card: React.FC<CardProps> = ({ index, task, onOperatorSuccess }) => {
     };
 
     const handleAssignUser = () => {
-        setShowAssignUser(true);
+        onOperatorSuccess();
+        setShowAssignUser(false);
+        message.success('操作成功!');
     };
 
     const menu = (
         <Menu>
-            <Menu.Item icon={<UserOutlined />} onClick={handleAssignUser}>
+            <Menu.Item
+                icon={<UserOutlined />}
+                onClick={() => setShowAssignUser(true)}
+            >
                 分配人员
             </Menu.Item>
             <Menu.Item icon={<EditOutlined />} onClick={handleEditAction}>
@@ -130,9 +136,7 @@ const Card: React.FC<CardProps> = ({ index, task, onOperatorSuccess }) => {
                         {...provided.dragHandleProps}
                     >
                         <Title>
-                            <IndexNumber>
-                                {task.projectId + '-' + task.id}
-                            </IndexNumber>
+                            <IndexNumber>{task.code}</IndexNumber>
                             <AvatarWrapper>
                                 {task.userId ? (
                                     <Avatar userId={task.userId}></Avatar>
@@ -194,7 +198,7 @@ const Card: React.FC<CardProps> = ({ index, task, onOperatorSuccess }) => {
                 userId={task.userId || ''}
                 taskId={task.id}
                 onCancel={() => setShowAssignUser(false)}
-                onOk={() => setShowAssignUser(false)}
+                onOk={handleAssignUser}
             />
         </>
     );
@@ -229,7 +233,6 @@ const Overlay = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-    /* background-color: #ebecf0; */
     color: rgba(0, 0, 0, 0.65);
     display: flex;
     justify-content: flex-end;

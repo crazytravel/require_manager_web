@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { Select, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import { FundOutlined, AppstoreOutlined } from '@ant-design/icons';
@@ -11,14 +11,11 @@ import { Routes } from 'common/routes';
 const { Option } = Select;
 
 interface ToolbarProps {
-    activeProjectId?: string,
-    onFinish?: (projectId: string) => void,
+    activeProjectId?: string;
+    onFinish?: (projectId: string) => void;
 }
 
-const Toolbar: React.FC<ToolbarProps> = ({
-    activeProjectId,
-    onFinish
-}) => {
+const Toolbar: React.FC<ToolbarProps> = ({ activeProjectId, onFinish }) => {
     const { pathname } = useLocation();
     let currentPath = pathname.substring(pathname.indexOf('/') + 1);
     if (currentPath !== 'kanban') {
@@ -26,7 +23,9 @@ const Toolbar: React.FC<ToolbarProps> = ({
     }
 
     const [currentPage, setCurrentPage] = useState<string>(currentPath);
-    const [searchValue, setSearchValue] = useState<string>(activeProjectId || '');
+    const [searchValue, setSearchValue] = useState<string>(
+        activeProjectId || '',
+    );
 
     useEffect(() => {
         let currentPath = pathname.substring(pathname.indexOf('/') + 1);
@@ -41,7 +40,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
 
     const handleMenuClick = (e: ClickParam) => {
         setCurrentPage(e.key);
-    }
+    };
 
     const handleSearch = (value: string) => {
         setSearchValue(value);
@@ -49,17 +48,24 @@ const Toolbar: React.FC<ToolbarProps> = ({
 
     const handleChange = (value: string) => {
         setSearchValue(value);
-        console.log('刷新', value);
         if (onFinish) {
             onFinish(value);
         }
-    }
+    };
 
-    const options = fetchedData?.map(project => <Option value={project.id} key={project.id}>{project.name}</Option>);
+    const options = fetchedData?.map((project) => (
+        <Option value={project.id} key={project.id}>
+            {project.name}
+        </Option>
+    ));
 
     return (
         <Subtitle>
-            <Menu onClick={handleMenuClick} selectedKeys={[currentPage]} mode="horizontal">
+            <Menu
+                onClick={handleMenuClick}
+                selectedKeys={[currentPage]}
+                mode="horizontal"
+            >
                 <Menu.Item key="kanban" icon={<FundOutlined />}>
                     <Link to={Routes.kanban.path}>看板</Link>
                 </Menu.Item>
@@ -69,7 +75,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
             </Menu>
             {/* <Divider type="vertical" /> */}
             <MenuContainer>
-                {currentPage === 'kanban' ?
+                {currentPage === 'kanban' ? (
                     <Condition>
                         搜索项目：
                         <Select
@@ -86,11 +92,13 @@ const Toolbar: React.FC<ToolbarProps> = ({
                             {options}
                         </Select>
                     </Condition>
-                    : ''}
+                ) : (
+                    ''
+                )}
             </MenuContainer>
         </Subtitle>
-    )
-}
+    );
+};
 
 const Subtitle = styled.div`
     background-color: #fff;
@@ -112,9 +120,6 @@ const MenuContainer = styled.div`
     margin: 0 10px;
 `;
 
-const Condition = styled.div`
-    
-`;
-
+const Condition = styled.div``;
 
 export default Toolbar;

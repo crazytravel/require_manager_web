@@ -72,11 +72,7 @@ const ProjectForm: React.FC<ProjectFormProps> = (props) => {
                 >
                     <Input />
                 </Form.Item>
-                <Form.Item
-                    name="description"
-                    label="项目简介"
-                    rules={[{ required: true, message: '请输入项目简介' }]}
-                >
+                <Form.Item name="description" label="项目简介">
                     <TextArea rows={4} />
                 </Form.Item>
             </Form>

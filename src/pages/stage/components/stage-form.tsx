@@ -59,7 +59,7 @@ const StageForm: React.FC<StageFormProps> = (props) => {
     return (
         <Modal
             visible={props.visible}
-            title="创建项目"
+            title="创建阶段"
             okText="保存"
             cancelText="取消"
             onCancel={props.onCancel}

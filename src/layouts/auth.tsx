@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import bgImg from 'assets/images/cover-login.jpg';
 
-const SignContainer: React.FC = props => {
-
+const SignContainer: React.FC = (props) => {
     return (
         <Container>
             <Content>
@@ -12,9 +11,8 @@ const SignContainer: React.FC = props => {
                 <div>{props.children}</div>
             </Content>
         </Container>
-    )
-}
-
+    );
+};
 
 const Container = styled.div`
     width: 100%;
@@ -45,6 +43,5 @@ const SubTitle = styled.p`
     font-size: 1.2rem;
     margin-bottom: 5rem;
 `;
-
 
 export default SignContainer;

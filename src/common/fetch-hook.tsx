@@ -8,16 +8,19 @@ export function useFetch<T = undefined>(url: string, deps?: any[]) {
     const [fetchedData, setFetchedData] = useState<T>();
     const [error, setError] = useState<T>();
     useEffect(() => {
-        console.log('sending a http request to URL: ' + axios.defaults.baseURL! + url)
+        console.log(
+            'sending a http request to URL: ' + axios.defaults.baseURL! + url,
+        );
         setLoading(true);
-        axios.get(url)
-            .then(res => {
+        axios
+            .get(url)
+            .then((res) => {
                 if (res.status === HttpStatus.OK) {
                     setFetchedData(res.data);
                     console.log(res.data);
                 }
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error('error message: ', err);
                 setError(err);
                 message.error(err.message);

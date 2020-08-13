@@ -3,6 +3,7 @@ import { Modal, Table, Input, message } from 'antd';
 import HttpStatus from 'http-status-codes';
 import Axios from 'common/network';
 import { User } from 'models/user';
+import { useSession } from 'common/session-context';
 const { Search } = Input;
 
 interface AssignUserProps {
@@ -15,12 +16,15 @@ const AssignUser: React.FC<AssignUserProps> = (props) => {
     const [selectedIds, setSelectedIds] = useState<React.ReactText[]>();
     const [userData, setUserData] = useState();
     const [loading, setLoading] = useState(false);
+    const { session } = useSession();
     useEffect(() => {
         setLoading(true);
         Axios.get('/api/v1/users')
             .then((res) => {
                 if (res.status === HttpStatus.OK) {
-                    setUserData(res.data);
+                    let data = res.data;
+                    data = data.filter((d: User) => d.id !== session.id);
+                    setUserData(data);
                 }
             })
             .catch((err) => message.error('加载失败'))
@@ -33,11 +37,9 @@ const AssignUser: React.FC<AssignUserProps> = (props) => {
         });
     }, [props.projectId]);
     const onOk = () => {
-        Axios.post(`/api/v1/projects/${props.projectId}/users`, {
-            userIds: selectedIds,
-        })
+        Axios.post(`/api/v1/projects/${props.projectId}/users`, selectedIds)
             .then((res) => {
-                if (res.status === HttpStatus.CREATED) {
+                if (res.status === HttpStatus.OK) {
                     props.onOk();
                 }
             })
@@ -69,13 +71,8 @@ const AssignUser: React.FC<AssignUserProps> = (props) => {
                 ]}
                 rowSelection={{
                     type: 'checkbox',
-                    onChange: (selectedRowKeys, selectedRows) => {
-                        console.log(
-                            `selectedRowKeys: ${selectedRowKeys}`,
-                            'selectedRows: ',
-                            selectedRows,
-                        );
-                    },
+                    onChange: (selectedRowKeys) =>
+                        setSelectedIds(selectedRowKeys),
                     selectedRowKeys: selectedIds,
                 }}
                 rowKey={(record) => record.id}
